@@ -1,0 +1,13 @@
+#############################
+❄️ Why github is required ?
+#############################
+➤ It is a source code management tool and version control tool.
+➤ Integrate developers code.
+➤ Tracks the history of work.
+
+❄️ Architecture of github 
+###########################
+👉 Working directory: Contains all the data that is present 
+👉 Staging area: Here we put the data that is not selected previously 
+👉 Local Repository: The data present in the staging area is send to the local repository.
+👉 Remote / central repository: From local repository we add the data to the remote repository so that other people can access our code.
