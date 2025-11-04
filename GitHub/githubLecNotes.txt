@@ -11,3 +11,27 @@
 👉 Staging area: Here we put the data that is not selected previously 
 👉 Local Repository: The data present in the staging area is send to the local repository.
 👉 Remote / central repository: From local repository we add the data to the remote repository so that other people can access our code.
+
+👉 Note: In companies we use personal access tokens to login to the github to connect git with github we will be using the personal access token.
+➤ Go to settings  --> Developer settings --> Personal access tokens 
+➤ Generate token give the permissions to the token click on generate token now we will we using this token to connect git with github
+
+✨ To unstage the files from the staging area 
+***********************************************
+➤ We will use this command 
+git rm --cached filename
+
+👉 If we want to restore the file to the earlier stage 
+********************************************************
+➤ Suppose we have updated the file and now we want our previous file back then we will use 
+git restore filename 
+✅ Note : This command works only after the first commit has been made 
+➤ If you have added the file to the staging area and now if you try want to unstage it you have made your first commit also then we can use 
+git restore --staged filename  //Use this to unstage the file.
+
+✨ To copy project from the github 
+####################################
+➤ Use git clone command to copy the project from the github
+➤ First get the url of the project in the github open the project click on code you will get the url 
+➤ Create a folder and there open gitbash and run git clone url this will clone the project for you.
+➤ We will use clone for the first time when we are downloading the project. 

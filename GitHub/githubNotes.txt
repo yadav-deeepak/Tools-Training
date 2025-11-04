@@ -469,3 +469,150 @@ git status
 | `git config --global user.email "email@example.com"` | Set global email                                             | `git config --global user.email "email@example.
 |                                                      |                                                              |    com"`                                      |
 #######################################################################################################################################################################
+
+###########################################
+✨ To Unstage Files from the Staging Area
+###########################################
+➤ Use this command to remove a file from the staging area (without deleting it from your local system):
+
+git rm --cached filename
+
+📘 Example:
+-------------
+git rm --cached index.html
+
+➤ This command unstages index.html but keeps it in your working directory.
+✅ Useful when you added a file by mistake and don’t want it in the next commit.
+
+##########################################################
+👉 To Restore File to an Earlier (Last Committed) State
+#########################################################
+➤ If you’ve modified a file but now want to revert it to the version from the last commit, use:
+
+git restore filename
+
+📘 Example:
+------------
+git restore app.js
+
+✅ Note: This works only after you’ve made your first commit.
+It discards local changes and restores the file to its last committed version.
+
+🔁 To Unstage a File (After First Commit)
+*******************************************
+➤ If a file has been added to the staging area and you now want to unstage it (without deleting changes):
+
+git restore --staged filename
+
+📘 Example:
+------------
+git restore --staged index.html
+
+✅ This removes the file from the staging area but keeps your local modifications in the working directory.
+
+🧠 Summary Table
+******************
+#################################################################################################################
+| 🧩 Command                      | 💡 Purpose                              | ⚙️ Effect                        |
+| ------------------------------- | --------------------------------------- | --------------------------------- |
+| `git rm --cached filename`      | Unstage file (remove from staging area) | Keeps local file intact           |
+| `git restore filename`          | Revert file to last committed version   | Discards local changes            |
+| `git restore --staged filename` | Unstage file (after commit made)        | Keeps changes, removes from stage |
+#################################################################################################################
+
+#######################
+🎯 git clone Command
+#######################
+➤ The git clone command is used to create a copy of an existing Git repository (usually from GitHub, GitLab, or any remote server) into your local system.
+It not only copies the files but also the entire commit history, branches, and configurations of that repository.
+
+✨ Purpose of git clone
+*************************
+➤ To download or duplicate an existing repository (remote or local).
+➤ It automatically:
+=> Creates a new folder for the project.
+=> Initializes it as a Git repository.
+=> Adds a remote connection (named origin) pointing to the source repository.
+
+👉 Syntax
+----------
+git clone <repository-url>
+
+📘 Example (GitHub Repo):
+----------------------------
+git clone https://github.com/deepak/portfolio.git
+
+✅ This command will:
+1️⃣ Create a folder named portfolio.
+2️⃣ Copy all repository files into it.
+3️⃣ Set up a remote named origin pointing to https://github.com/deepak/portfolio.git.
+
+💡 Common Use Cases
+*********************
+🧩 a. Clone from HTTPS
+========================
+git clone https://github.com/user/repo.git
+
+➤ Most common method; requires username/password or token for private repos.
+
+🧩 b. Clone from SSH
+=======================
+git clone git@github.com:user/repo.git
+
+➤ Uses SSH keys for secure authentication (no password needed after setup).
+
+🧩 c. Clone into a Specific Folder
+====================================
+git clone <repo-url> <folder-name>
+
+📘 Example:
+------------
+git clone https://github.com/user/repo.git myproject
+
+➤ This clones the repository into a folder named myproject.
+
+🧩 d. Clone a Specific Branch
+================================
+git clone -b <branch-name> <repo-url>
+
+📘 Example:
+------------
+git clone -b dev https://github.com/user/repo.git
+
+➤ Clones only the dev branch instead of the default branch (usually main or master).
+
+🧠 Behind the Scenes (When You Run git clone)
+************************************************
+1️⃣ Creates a new directory on your system.
+2️⃣ Initializes it as a Git repository (git init).
+3️⃣ Downloads all commits, branches, and files from remote.
+4️⃣ Sets up the remote origin for syncing.
+
+📁 After Cloning – Folder Structure Example
+*********************************************
+repo-name/
+│
+├── .git/              → Contains commit history & Git metadata
+├── index.html
+├── app.js
+└── README.md
+
+🧩 To Verify Remote Repository
+================================
+git remote -v
+
+📘 Output Example:
+====================
+origin  https://github.com/user/repo.git (fetch)
+origin  https://github.com/user/repo.git (push)
+
+✅ Summary Table
+******************
+#########################################################################################################################
+| 🧩 Command                    | 💡 Purpose                      | ⚙️ Example                                         |
+| ----------------------------- | ------------------------------- | --------------------------------------------------- |
+| `git clone <url>`             | Clone an entire repo            | `git clone https://github.com/user/repo.git`        |
+| `git clone <url> <folder>`    | Clone repo into a custom folder | `git clone https://github.com/user/repo.git myapp`  |
+| `git clone -b <branch> <url>` | Clone a specific branch         | `git clone -b dev https://github.com/user/repo.git` |
+| `git remote -v`               | View connected remote URLs      | `git remote -v`                                     |
+#########################################################################################################################
