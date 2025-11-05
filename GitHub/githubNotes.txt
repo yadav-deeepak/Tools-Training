@@ -616,3 +616,87 @@ origin  https://github.com/user/repo.git (push)
 | `git clone -b <branch> <url>` | Clone a specific branch         | `git clone -b dev https://github.com/user/repo.git` |
 | `git remote -v`               | View connected remote URLs      | `git remote -v`                                     |
 #########################################################################################################################
+
+#####################
+🎯 git pull Command
+#####################
+➤ The git pull command is used to update your local repository with the latest changes from a remote repository (like GitHub).
+It combines two commands — git fetch and git merge — in one step.
+
+✨ Purpose of git pull
+************************
+➤ To synchronize your local branch with the remote branch.
+➤ It downloads new commits, files, or updates from the remote repo and merges them automatically into your current local branch.
+
+👉 Syntax
+-----------
+git pull <remote> <branch>
+
+📘 Example:
+------------
+git pull origin main
+
+➤ This command fetches and merges the latest changes from the main branch of the remote named origin.
+
+💡 How It Works Internally
+***************************
+1️⃣ git fetch → Downloads new commits & updates from the remote repository.
+2️⃣ git merge → Merges the fetched commits into your current working branch.
+
+📘 Example Flow:
+------------------
+git pull origin main
+   ↓
+= git fetch origin main
++ git merge origin/main
+
+🧩 Common Use Cases
+*********************
+🧠 a. Pull from Default Remote (usually origin)
+================================================
+git pull
+
+➤ Pulls changes from the remote branch your local branch is tracking.
+
+🧠 b. Pull from a Specific Branch
+==================================
+git pull origin dev
+
+➤ Updates your local dev branch with the latest commits from remote dev.
+
+🧠 c. Pull with Rebase (cleaner history)
+=========================================
+git pull --rebase
+
+➤ Keeps your commit history linear by applying your changes after the remote commits.
+
+⚠️ Note:
+*********
+➤ If you have uncommitted local changes, git pull might fail or cause merge conflicts.
+➤ Always commit or stash your work before pulling:
+
+git stash
+git pull
+git stash pop
+
+
+📁 Example Scenario
+*********************
+➤ You and your teammate are working on the same GitHub repo.
+➤ Your teammate pushes new commits.
+
+You run:
+--------
+git pull origin main
+
+Now your local codebase is updated with all their changes.
+
+✅ Summary Table
+******************
+####################################################################################################
+| 🧩 Command            | 💡 Purpose                                    | ⚙️ Example             |
+| ---------------------- | --------------------------------------------- | ---------------------- |
+| `git pull`             | Pulls from the default remote tracking branch | `git pull`             |
+| `git pull origin main` | Pulls from a specific remote branch           | `git pull origin main` |
+| `git pull --rebase`    | Pulls changes while rebasing your commits     | `git pull --rebase`    |
+###################################################################################################

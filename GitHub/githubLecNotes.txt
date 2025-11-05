@@ -35,3 +35,9 @@ git restore --staged filename  //Use this to unstage the file.
 ➤ First get the url of the project in the github open the project click on code you will get the url 
 ➤ Create a folder and there open gitbash and run git clone url this will clone the project for you.
 ➤ We will use clone for the first time when we are downloading the project. 
+
+#############
+🚀 git pull 
+#############
+➤ Once we clone the repository then what we do is we do git pull every time we need the updated file. 
+➤ It will pull only that code which is not present in our local repository .
