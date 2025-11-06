@@ -41,3 +41,32 @@ git restore --staged filename  //Use this to unstage the file.
 #############
 ➤ Once we clone the repository then what we do is we do git pull every time we need the updated file. 
 ➤ It will pull only that code which is not present in our local repository .
+
+##################################
+❄️ Concept of branches in github
+##################################
+➤ Whenever we want to add some new feature to our application or we want to fix some bug we dont work directly on the main branch code 
+➤ Main branch code is used for the deployement it is used to run our project so we dont work directly on the main branch because suppose if we start to work directly on main branch and we are developing a feature so if we push the incomplete feature to our main branch it will affect our production server and our code might stop running 
+➤ So what we do is we create a clone of project then we create the branch from our main and then we start working on that branch we will push our daily work there this way it wont affect our main branch and when our feature development is complete the tech lead will merge our branch to the main branch.
+➤ So like this many branches are created from the main branch and everyone can work parallely on differnt task .
+➤ Every on is working on there own branch when they are finished with the task then they will tell the tech lead and he/she will merge the branch to the main branch this way it wont affect the production code and new features are also added .
+
+🌟 How to work on branch
+***************************
+➤ Using git pull command we will get to know about all the branches that are present in our project.
+➤ We will switch to the branch on which we have to work using let us suppose i have to work on bug fix branch so we will do 
+git switch bug-fix
+➤ This branch is for all the developers who are working on the bug fixing so now we will create a new branch for ourselves and there we will work on the task that is assigned to us.
+git branch bug-fix-3456-login-error 
+//This will create a new branch named bug-fix-3456-login-error 
+➤ We will switch to this branch 
+git switch bug-fix-3456-login-error
+➤ Now i can work on this branch it will not affect the work of other developers 
+👉 Note: After working if we try to push the code to our remote repo it wont be pushed there it will throw an error because the branch the we have created is not present in our remote repo 
+➤ We will do 
+git push --set-upstream origin bug-fix-3456-login-error
+
+➤ Now we will see this branch in our remote repo and our code will be present there.
+
+➤ Still this code is present in only our branch it is not present in the main branch or bug-fix branch for that merge will be done then only the changes will be deflected to the other branches.
+➤ For that our tech lead will tell us to do PR (pull request). We will do the PR and then it will check for the merge conflict if there is no conflict it will merge our code now we can see the changes in our bug-fix branch .
