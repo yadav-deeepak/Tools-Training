@@ -70,3 +70,73 @@ git push --set-upstream origin bug-fix-3456-login-error
 
 ➤ Still this code is present in only our branch it is not present in the main branch or bug-fix branch for that merge will be done then only the changes will be deflected to the other branches.
 ➤ For that our tech lead will tell us to do PR (pull request). We will do the PR and then it will check for the merge conflict if there is no conflict it will merge our code now we can see the changes in our bug-fix branch .
+
+########################################
+❄️ What do you mean by git conflict ?
+########################################
+➤ When two people have modified the same file and the same line according to there needs then the conflict arises.
+➤ Suppose developer A has modified line number 12 and developer B has also modified line number 12 so here in this case the conflict will arise.
+
+##############################################
+❄️ After commit how can we undo the commit ?
+#############################################
+➤ To undo the changes from the local repository we will use git reset command
+Eg: git reset --soft HEAD~1
+➤ So soft reset will help us to undo the commit but the file will be present in the staging area or file wont be removed from the working tree.
+Eg: git reset --hard HEAD~1 
+➤ This will undo the changes from the local repository but it will also remove the file from the working tree.
+
+########################################
+❄️ How to undo your changes in github?
+########################################
+➤ In order to undo the latest commit on github we will use the command git revert commitId
+➤ When we run this command it will open a file where we can write the message and then do esc :wq 
+➤ Then do git push 
+
+##################################
+❄️ What do you mean by forking ?
+##################################
+➤ Suppose if you want some code on github and u want to use it then we will do forking it will get that code to your github then we can do the changes that we want to do in it according to our need 
+➤ A fork is a copy of a repository. Forking a repository allows you to freely experiment with changes without affecting the original project
+
+###########################
+❄️ What is collabortor ?
+##########################
+➤ When we want to allow the other developers to commit on our code and collaborate with them to create a project then we will use collaborator concept .
+➤ To provide this authority to other developers to perform the commit on our code : 
+settings --> collaborator --> add people  
+➤ Search the accounts of people and add them 
+
+##############################################
+❄️ Difference between git pull and git fetch
+##############################################
+➤ git pull : It will help us to get the latest changes that have been done in our repository.
+➤ But here also conflict can occur so to solve this problem git fetch came into picture.
+➤ Both pull and fetch are used to take latest changes from the remote repository to our system.
+➤ Fetch will bring the code from remote repository to local repo only it will not merge the code to the working tree . Now from the local if you want to merge it you can do it manually it is done to avoid the conflicts.
+➤ So we will get the code then review it if there are no conflicts then merge the code to working tree .
+git merge //use this to merge the code to the working tree.
+➤ But in pull you are bring the latest code from the remote repo to local repo and then merge it to the working tree so here conflicts will arise.
+
+###############
+❄️ git stash 
+##############
+➤ It is a command used in Git to temporarily save changes that are not yet committed to work on something else without losing your modifications.
+➤ when you run git stash, all your modified but unstaged or staged changes are temporarily stored in a hidden area
+
+example: 
+git stash - to store changes in temp area
+git stash apply - to get the changes from temp area back
+
+##################
+❄️ git cherrypic 
+##################
+➤ Suppose in you git you have perform 10 commits now if you want to push only some particular commits to the branch then to do it we will be using this command.
+➤ git cherry-pick is used to apply a specific commit from one branch to another without merging the entire branch.
+
+Interview Question?
+
+You have done today 5 commits, but you want to merge only 3rd commit to particular branch, how will you do?
+Answer: git cherrypic
+
+Note: git merge will merge all the commit to a particular branch

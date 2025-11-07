@@ -893,3 +893,700 @@ git checkout -b hotfix/crash-fix
 Develop → Test → Merge → Release → Maintain
 
 ➤ This helps multiple developers work together without breaking each other’s code, ensures safe deployment, and maintains code quality. 🚀
+
+#################################
+🎯 Git Conflict (Merge Conflict)
+#################################
+➤ A Git conflict happens when two or more developers make changes to the same part of a file, and Git doesn’t know which version to keep while merging or pulling code.
+➤ In simple words — Git gets confused because it can’t automatically decide whose changes are correct 😅.
+
+✨ When Do Git Conflicts Occur?
+*********************************
+🧩 1. During Merging Branches
+===============================
+➤ When you try to merge two branches, and both branches have modified the same lines in a file.
+📘 Example:
+➤ You edit index.html in feature/login branch.
+➤ Another developer edits the same line in main.
+➤ When you merge feature/login → main, Git can’t auto-decide which version to keep → conflict!
+
+🧩 2. During git pull
+========================
+➤ When you pull new changes from remote but your local branch also has edits to the same file.
+
+📘 Example:
+➤ You change home.js locally.
+➤ Someone pushed new changes to home.js on GitHub.
+➤ When you run git pull origin main → conflict occurs.
+
+🧩 3. During Rebase or Cherry-Pick
+=====================================
+➤ If commits being rebased or cherry-picked modify the same code as your current branch.
+
+✨ How Git Shows a Conflict
+******************************
+➤ Git marks the conflicting section inside the file using special symbols:
+
+"<<<<<<< HEAD
+<h1>Welcome to My Website</h1>   ← Your version (local)
+=======
+<h1>Welcome to Our Website</h1>  ← Remote version
+>>>>>>> main "
+
+📘 Meaning:
+------------
+<<<<<<< HEAD → Your local version
+
+======= → Divider
+
+>>>>>>> branch-name → Incoming (remote) version
+
+✨ How to Resolve Git Conflicts
+*********************************
+🧩 Step 1: Identify the Conflict
+=================================
+git status
+
+➤ Shows which files have conflicts.
+
+🧩 Step 2: Open the Conflicted File
+======================================
+➤ Look for the <<<<<<<, =======, and >>>>>>> markers.
+
+🧩 Step 3: Manually Edit the File
+===================================
+➤ Decide which version to keep — yours, theirs, or a combination.
+📘 Example (resolved):
+
+<h1>Welcome to Our Website</h1>
+
+🧩 Step 4: Mark as Resolved
+=============================
+git add <filename>
+
+🧩 Step 5: Commit the Merge
+=============================
+git commit -m "Resolved merge conflict in index.html"
+
+✨ Preventing Git Conflicts
+******************************
+➤ Communicate with your team — avoid editing the same file lines.
+➤ Pull the latest changes before starting work:
+
+git pull origin main
+
+➤ Commit frequently and use feature branches.
+➤ Keep your branches short-lived (don’t let them drift too far from main).
+
+✅ Summary Table
+******************
+##################################################################################
+| 🧩 Situation     | 💥 Cause                           | 🛠️ Solution           |
+| ---------------- | ---------------------------------- | ---------------------- |
+| Merge conflict   | Same file modified in two branches | Manually edit & commit |
+| Pull conflict    | Local changes differ from remote   | Resolve and commit     |
+| Rebase conflict  | Overlapping commits                | Edit & continue rebase |
+| Prevent conflict | Pull before working                | Sync code often        |
+##################################################################################
+
+###################################################################
+🎯 Undoing a Commit in Git (After Committing to Local Repository)
+####################################################################
+➤ Sometimes after committing changes, you realize you’ve made a mistake, added the wrong file, or want to edit the commit message.
+➤ Git provides multiple ways to undo or modify commits depending on the situation.
+
+Let’s go through them step by step 👇
+
+✨ 1️⃣ Undo Last Commit (But Keep Changes in Working Directory)
+*****************************************************************
+➤ If you want to uncommit but keep your code changes (so you can fix or recommit):
+
+📘 Command:
+------------
+git reset --soft HEAD~1
+
+✅ Effect:
+------------
+➤ The last commit is undone.
+➤ Your files stay staged (ready to commit again).
+
+📘 Use case: You forgot to include a file or want to change the commit message.
+
+✨ 2️⃣ Undo Last Commit (Uncommit + Unstage Changes)
+*****************************************************
+➤ If you want to remove the commit and also unstage the files, but keep changes in your working directory:
+
+📘 Command:
+------------
+git reset --mixed HEAD~1
+
+or simply
+
+git reset HEAD~1
+
+✅ Effect:
+-----------
+➤ Commit removed.
+➤ Files unstaged (moved back to working area).
+➤ No data lost.
+
+📘 Use case: You realize you committed too early and want to reselect which files to stage.
+
+✨ 3️⃣ Undo Commit (Completely Remove Changes)
+***********************************************
+➤ If you want to undo the commit and discard all changes permanently (⚠️ irreversible):
+
+📘 Command:
+------------
+git reset --hard HEAD~1
+
+✅ Effect:
+-----------
+➤ Commit is removed.
+➤ All changes are deleted from working directory.
+
+📘 Use case: You committed wrong files and want a complete reset.
+
+✨ 4️⃣ Edit the Last Commit Message
+*************************************
+➤ If you only want to change the commit message:
+
+📘 Command:
+------------
+git commit --amend
+
+✅ Effect:
+----------
+➤ Opens the last commit message in your default editor.
+➤ Lets you edit and save it.
+
+📘 Use case: Typo or incorrect message in last commit.
+
+✨ 5️⃣ Undo a Specific Commit (Not Just the Last One)
+*********************************************************
+➤ If you want to reverse the effects of a previous commit (without deleting history):
+
+📘 Command:
+------------
+git revert <commit-hash>
+
+✅ Effect:
+-----------
+➤ Creates a new commit that undoes the changes of the specified commit.
+➤ Safe for shared/public branches.
+
+📘 Use case: You already pushed the commit to GitHub and want to undo its changes safely.
+
+✨ 6️⃣ Check Commit History
+*****************************
+➤ Before undoing, it’s good to see your recent commits:
+
+📘 Command:
+------------
+git log --oneline
+
+📘 Example Output:
+-------------------
+a8f21c2  Added login feature
+b3e67f9  Fixed navbar issue
+4d1e9b5  Initial commit
+
+➤ Then use commit hash for git reset or git revert.
+
+✅ Summary Table
+*****************
+##############################################################################################################
+| 🧩 Command                 | 💡 Purpose                   | 🧠 Keeps Changes? | ⚠️ Safe for Shared Repo? |
+| -------------------------- | ---------------------------- | ----------------- | -------------------------- |
+| `git reset --soft HEAD~1`  | Undo commit, keep staged     | ✅ Yes             | ❌ No                    |
+| `git reset --mixed HEAD~1` | Undo commit, unstage changes | ✅ Yes             | ❌ No                    |
+| `git reset --hard HEAD~1`  | Undo and delete changes      | ❌ No              | ❌ No                    |
+| `git commit --amend`       | Edit last commit message     | ✅ Yes             | ⚠️ Only if not pushed    |
+| `git revert <hash>`        | Undo specific commit safely  | ✅ Yes             | ✅ Yes                   |
+##############################################################################################################
+
+💬 In Short:
+**************
+➤ Use git reset if commit isn’t pushed yet.
+➤ Use git revert if commit is already pushed to GitHub.
+➤ Use --soft, --mixed, --hard depending on whether you want to keep or discard changes.
+
+#################################################################
+🎯 How to Undo Changes or Commits in GitHub (Remote Repository)
+#################################################################
+➤ Once you’ve pushed commits to GitHub, undoing them works a bit differently than local undoing — because the commits are already shared publicly and may affect other collaborators.
+➤ So, depending on the situation, you can choose between safe (non-destructive) or forceful (destructive) methods.
+
+Let’s go step-by-step 👇
+
+✨ 1️⃣ Undo Changes Using git revert (Safe Way ✅)
+****************************************************
+➤ Best method when the commit is already pushed to GitHub — it doesn’t delete history, it creates a new commit that reverses the previous one.
+
+📘 Command:
+------------
+git revert <commit-hash>
+
+✅ Effect:
+----------
+➤ Creates a new commit that undoes the effects of the specified commit.
+➤ Keeps history clean and safe for shared branches.
+
+📘 Example:
+------------
+git log --oneline
+# Output:
+# 9c2d1f3 Fixed navbar
+# 4a9b7b2 Added login form
+git revert 4a9b7b2
+
+➤ Then push it to GitHub:
+
+git push origin main
+
+💡 Used When:
+--------------
+➤ Commit is already pushed.
+➤ You want to safely reverse changes without deleting history.
+
+✅ Summary Table
+*****************
+###########################################################################################################################
+| 🧩 Method                      | 💡 Use Case                       | 🧠 Safe for Team?      | ⚙️ Command              |
+| ------------------------------ | --------------------------------- | ---------------------- | ------------------------- |
+| `git revert <hash>`            | Undo pushed commit safely         | ✅ Yes                  | `git revert <hash>`      |
+| `git reset --soft HEAD~1`      | Undo local commit, keep staged    | ⚠️ Yes (if not pushed) | `git reset --soft HEAD~1` |
+| `git reset --hard HEAD~1`      | Remove commit + changes           | ❌ No                   | `git reset --hard HEAD~1`|
+| GitHub Revert (GUI)            | Undo commit via website           | ✅ Yes                  | Done via GitHub UI       |
+| `git push origin main --force` | Delete commit from GitHub history | ❌ No                   | Use with caution         |
+############################################################################################################################
+
+💬 In Short:
+************
+✅ Use git revert for commits already pushed to GitHub (safe).
+⚙️ Use git reset for commits only in local repo.
+⚠️ Use --force push only if you’re sure no one else depends on that branch.
+
+######################
+💫 Forking in GitHub
+#####################
+➤ Definition:
+Forking means creating a personal copy of someone else’s repository under your own GitHub account.
+➤ It allows you to freely experiment with changes without affecting the original project.
+
+☃️ Why Forking is Used:
+**************************
+✅ To Contribute to Open Source Projects
+===========================================
+➤ You fork someone’s repo, make improvements, and then create a Pull Request to suggest your changes to the original repo.
+
+🧪 For Safe Experimentation
+=============================
+➤ You can test or modify code in your own copy without the risk of breaking the original repository.
+
+🧍‍♂️ Independent Development
+===========================
+➤ Even if you don’t have permission to the original repo, you can still fork it and work independently.
+
+☃️ How Forking Works (Step-by-Step):
+**************************************
+➤ Go to the repository you want to fork on GitHub.
+➤ Click on the “Fork” button (top-right corner).
+➤ GitHub will create a copy of that repository in your own GitHub account.
+Now you can:
+➤ Clone your forked repo locally using git clone
+➤ Make changes and commits
+➤ Push changes to your forked repo
+➤ Create a Pull Request to merge your changes into the original repo
+
+🧠 Example:
+Let’s say you fork a repository called open-source-app by another developer.
+Now your copy will be:
+
+github.com/your-username/open-source-app
+
+➤ You make some changes and then open a Pull Request to suggest merging them back into:
+
+github.com/original-owner/open-source-app
+
+🧩 Difference Between Fork and Branch:
+***************************************
+########################################################################################################
+| Feature     | **Fork**                                     | **Branch**                              |
+| ----------- | -------------------------------------------- | --------------------------------------- |
+| Belongs to  | Different user account                       | Same repository                         |
+| Use case    | Contribute to others’ repos                  | Manage versions within the same project |
+| Visibility  | Public copy on GitHub                        | Internal to the repository              |
+| Permissions | You don’t need write access to original repo | You need access to create branches      |
+########################################################################################################
+
+#############################
+🤝 Collaborator in GitHub
+##########################
+➤ Definition:
+**************
+A collaborator is a person who is granted permission to contribute directly to a GitHub repository.
+They can push changes, create branches, review code, and merge pull requests, depending on the access level given by the repository owner.
+
+➤ Why Collaborators Are Needed:
+*********************************
+👨‍💻 Teamwork — In company or group projects, multiple developers need to work on the same repository.
+------------
+🔐 Controlled Access — The owner can choose who can make changes rather than keeping the repo public for everyone.
+----------------------
+🚀 Faster Development — Collaborators can directly commit or merge code, reducing delays caused by waiting for pull request approvals.
+-------------------------
+
+➤ Types of Access (Permissions):
+**********************************
+Read Access ➤ Can view and clone the repo but cannot make changes.
+Write Access ➤ Can push commits, create branches, and propose changes.
+Admin Access ➤ Can manage repo settings, collaborators, and branches.
+Maintain Access ➤ Can manage issues, pull requests, and workflows but not sensitive settings.
+Triage Access ➤ Can manage issues and pull requests without write access to the code.
+
+🌟 How to Add a Collaborator (Steps):
+*************************************
+➤ Go to your repository on GitHub.
+➤ Click Settings → Collaborators and Teams.
+➤ Click “Add people” and enter their GitHub username or email.
+➤ Assign the appropriate permission level.
+➤ The person will receive an email invitation to accept collaboration access.
+
+🧠 Example Scenario:
+➤ You created a repo called music-app.
+➤ You add your teammate as a collaborator with write access.
+➤ Now both of you can:
+=> Work on the same codebase
+=> Push updates
+=> Review each other’s commits
+
+🧩 Difference Between Collaborator and Fork Contributor:
+**********************************************************
+##############################################################################
+| Feature       | **Collaborator**               | **Fork Contributor**      |
+| ------------- | ------------------------------ | ------------------------- |
+| Access        | Direct access to the main repo | Works on their own fork   |
+| Commit Rights | Can push directly              | Must create pull requests |
+| Use Case      | Team projects                  | Open-source contributions |
+##############################################################################
+
+#################################
+📬 Pull Request (PR) in GitHub
+################################
+➤ Definition:
+***************
+➤ A Pull Request (PR) is a way to propose changes that you’ve made in your branch or forked repository to be merged into another branch (usually the main branch) of a project.
+➤ It’s a collaboration feature that lets team members review, discuss, and approve code before it becomes part of the main codebase.
+
+➤ Why Pull Requests Are Used:
+*******************************
+🔍 Code Review:
+****************
+➤ Other developers can review your code for bugs, logic errors, or better practices before merging.
+
+🧠 Team Collaboration:
+*************************
+➤ Allows developers to discuss and comment on code changes in a single thread.
+
+🧩 Safe Integration:
+*********************
+➤ Prevents unstable or incomplete features from being merged directly into the main branch.
+
+🕵️‍♂️ Version Control:
+*********************
+➤ Maintains a clean commit history and ensures changes are tracked and approved.
+
+➤ When You Create a Pull Request:
+***********************************
+You are basically saying —
+
+“I have made some changes in my branch/fork, please review and merge them into the main project.”
+
+➤ Pull Request Workflow (Step-by-Step):
+*****************************************
+➤ Create a new branch
+
+git checkout -b feature-login
+
+➤ Make your changes and commit them
+
+git add .
+git commit -m "Added login feature"
+
+➤ Push your branch to GitHub
+
+git push origin feature-login
+
+Create a Pull Request
+➤ Go to your repo on GitHub → Click “Compare & pull request”.
+➤ Write a title and description explaining your changes.
+➤ Select the base branch (like main) and compare branch (like feature-login).
+
+Team Review
+➤ Collaborators review the PR, suggest changes, or approve it.
+
+Merge the PR
+➤ Once approved, click “Merge pull request” to combine the code with the main branch.
+
+🧠 Example Scenario:
+*********************
+Let’s say you forked a repo called open-music-app.
+You fixed a bug and now want to share your fix with the original repo owner.
+You’ll create a Pull Request asking them to review and merge your code into their main repository.
+
+🧩 Difference Between Push and Pull Request:
+*********************************************
+#########################################################################################################
+| Feature | **Push**                           | **Pull Request**                                       |
+| ------- | ---------------------------------- | ------------------------------------------------------ |
+| Purpose | Send your commits to your own repo | Request to merge your commits into another branch/repo |
+| Access  | Needs write permission             | Anyone can create (even without write access)          |
+| Review  | No review process                  | Reviewed before merging                                |
+#########################################################################################################
+
+💡 Bonus Tip:
+***************
+You can also link PRs with issues (e.g., “Fixes #12”) — when the PR is merged, the linked issue closes automatically.
+
+##################
+⚙️ 1️⃣ git fetch
+##################
+➤ Definition:
+***************
+git fetch downloads the latest commits, branches, and files from the remote repository without changing your working directory or merging them into your current branch.
+
+➤ Purpose:
+*************
+To see what others have changed before actually merging it into your local code.
+
+➤ Key Points:
+***************
+👉 It updates your remote tracking branches (like origin/main).
+👉 Your local branch (like main) stays unchanged until you manually merge.
+👉 Safe to use — it won’t modify your local files.
+
+📘 Example:
+-------------
+git fetch origin
+
+👉 Then you can check the changes using:
+
+git log origin/main
+
+✅ Use Case:
+👉 When you want to review updates first before merging them into your local branch.
+
+⚙️ 2️⃣ git pull
+#################
+➤ Definition:
+git pull is basically a combination of two commands —
+
+git fetch + git merge
+
+👉 It fetches changes from the remote repository and automatically merges them into your current local branch.
+
+➤ Key Points:
+***************
+👉 Updates your branch and your local files.
+👉 May cause merge conflicts if there are differences between local and remote changes.
+👉 Faster but riskier than git fetch.
+
+📘 Example:
+------------
+git pull origin main
+
+👉 This fetches the latest changes from the remote main branch and merges them into your local main.
+
+✅ Use Case:
+------------
+When you’re confident and want to quickly update your branch with the latest code from the remote repo.
+
+🧩 Difference Table
+********************
+#################################################################################################
+| Feature           | **git fetch**                          | **git pull**                     |
+| ----------------- | -------------------------------------- | -------------------------------- |
+| Action            | Downloads changes only                 | Downloads + merges changes       |
+| Working Directory | Unchanged                              | Updated with new commits         |
+| Safety            | Safe (no conflicts)                    | May cause merge conflicts        |
+| Review            | You can review before merging          | No review — merges automatically |
+| Commands Used     | Only fetch                             | Fetch + Merge                    |
+| When to Use       | When you want to inspect changes first | When you want to update directly |
+#################################################################################################
+
+🧠 Example Analogy:
+*******************
+➤ git fetch = Checking your mailbox (you see new letters but don’t open them yet).
+➤ git pull = Checking + opening + reading your letters immediately.
+
+######################
+🧳 git stash Command
+######################
+➤ Definition:
+***************
+➤ git stash is used to temporarily save (stash) your uncommitted changes — both staged and unstaged — without committing them, so you can work on something else and later restore those changes when needed.
+
+➤ It’s like putting your work in a “storage box” for a while, and you can unpack it later. 🎁
+
+⚙️ Why We Use git stash:
+**************************
+🔄 Switch Branches Safely:
+============================
+➤ When you need to switch branches but have uncommitted changes.
+
+🧹 Clean Working Directory:
+=============================
+➤ Keeps your working directory clean without losing progress.
+
+🧪 Test Something Quickly:
+==========================
+➤ Allows you to test another change or pull updates without committing incomplete work.
+
+⚙️ Common git stash Commands:
+*******************************
+#######################################################################################################
+| 🧩 Command                 | 💡 Description                                                        |
+| -------------------------- | ---------------------------------------------------------------------- |
+| `git stash`                | Saves current changes (both staged and unstaged)                       |
+| `git stash save "message"` | Saves with a custom message for reference                              |
+| `git stash list`           | Shows all stashed changes                                              |
+| `git stash apply`          | Reapplies the most recent stash (keeps it in stash list)               |
+| `git stash pop`            | Reapplies the most recent stash and **removes it** from the stash list |
+| `git stash drop`           | Deletes a specific stash                                               |
+| `git stash clear`          | Removes **all** stashed entries                                        |
+#######################################################################################################
+
+⚙️ Example Scenario:
+*********************
+➤ Let’s say you’re working on the login-page branch 👇
+
+# You modified login.js but haven’t committed yet
+git status
+
+➤ Now your team asks you to quickly fix a bug in main.
+You can:
+--------
+git stash save "Work in progress - login page"
+git checkout main
+# fix the bug and commit it
+git checkout login-page
+git stash pop
+
+✅ Your previous uncommitted changes are restored!
+
+⚙️ Viewing and Managing Stashes:
+********************************
+➤ List all stashes:
+
+git stash list
+
+Output example:
+
+stash@{0}: WIP on login-page: added validation
+stash@{1}: WIP on profile-page: updated image upload
+
+➤ Apply a specific stash:
+
+git stash apply stash@{1}
+
+➤ Delete a specific stash:
+
+git stash drop stash@{0}
+
+
+🧠 Analogy:
+*************
+➤ Imagine you’re painting 🎨 and someone needs you to fix something else.
+➤ You quickly stash your paintbrush and canvas (your current work),
+do the urgent task, and then pull them out later to continue painting.
+
+#############################
+🍒 git cherry-pick Command
+#############################
+➤ Definition:
+**************
+git cherry-pick is used to copy a specific commit from one branch and apply it to another branch.
+It lets you pick only the commits you want instead of merging the entire branch.
+
+💡 Think of it like “picking one cherry (commit)” from a tree (branch) 🌳 and adding it to another branch.
+
+⚙️ Why We Use git cherry-pick:
+*******************************
+✅ To Apply a Specific Fix or Feature:
+========================================
+➤ When a bug fix or small feature made in one branch is also needed in another branch.
+
+🚀 To Avoid Full Merge:
+=========================
+➤ Instead of merging all commits, you can selectively move one or two important commits.
+
+🧩 To Maintain Clean History:
+===============================
+➤ Keeps your git history neat and avoids unnecessary commits from other branches.
+
+⚙️ Basic Syntax:
+==================
+git cherry-pick <commit-hash>
+
+📘 Example:
+-------------
+➤ Let’s say you have a commit a1b2c3d on your feature branch that fixes a bug,
+and you want the same fix on your main branch.
+
+# Step 1: Switch to the branch where you want to apply the commit
+git checkout main
+
+# Step 2: Cherry-pick the commit from another branch
+git cherry-pick a1b2c3d
+
+✅ The changes from commit a1b2c3d will now be added to main.
+
+⚙️ Useful Options:
+********************
+##############################################################################################
+| 🧩 Command                           | 💡 Description                                     |
+| ------------------------------------ | --------------------------------------------------- |
+| `git cherry-pick <hash>`             | Apply a single commit                               |
+| `git cherry-pick A..B`               | Apply a range of commits (from A to B, excluding A) |
+| `git cherry-pick --edit <hash>`      | Edit commit message before applying                 |
+| `git cherry-pick --no-commit <hash>` | Apply changes but don’t auto-commit them            |
+| `git cherry-pick --abort`            | Cancel cherry-pick if there’s a conflict            |
+##############################################################################################
+
+⚙️ Handling Conflicts:
+***********************
+➤ If the same lines were modified in both branches, Git will show a merge conflict ⚠️
+You’ll need to:
+
+# 1. Fix the conflicts manually in the file
+# 2. Mark conflicts as resolved
+git add <filename>
+
+# 3. Continue the cherry-pick
+git cherry-pick --continue
+
+🧠 Example Scenario:
+----------------------
+➤ You fixed a bug in hotfix/login-issue branch and committed it.
+➤ Now, your team wants that same fix in the develop branch.
+
+git checkout develop
+git cherry-pick 9f8a7b6
+
+➤ Now the bug fix is applied to develop without merging the whole hotfix branch. 🚀
+
+🧩 Difference Between git cherry-pick and git merge:
+*****************************************************
+###############################################################################
+| Feature         | **git cherry-pick**     | **git merge**                   |
+| --------------- | ----------------------- | ------------------------------- |
+| Purpose         | Apply a specific commit | Combine entire branch history   |
+| Commits applied | Only selected commits   | All commits from another branch |
+| History         | Linear and clean        | Merged commit history           |
+| Use Case        | Quick fixes or patches  | Full integration of a branch    |
+###############################################################################
+
+💡 Tip:
+=========
+Avoid overusing cherry-pick in large teams — it can lead to duplicate commits if not tracked carefully.
