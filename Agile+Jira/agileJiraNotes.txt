@@ -1,0 +1,198 @@
+###################
+🌀 What is Agile?
+###################
+➤ Definition:
+***************
+Agile is a project management and software development methodology that focuses on iterative progress, collaboration, and flexibility.
+It helps teams deliver small, functional parts of a project quickly and adapt to changes in requirements efficiently.
+
+➤ Key Idea:
+************
+Instead of delivering the entire project at once (like the traditional Waterfall model), Agile delivers work in small cycles called “iterations” or “sprints” — each lasting 1–4 weeks.
+
+➤ Core Principles (from the Agile Manifesto):
+***********************************************
+👉 1. Customer collaboration over contract negotiation: Constant feedback from customers ensures the product meets real needs.
+👉 2. Responding to change over following a plan: Teams quickly adapt when priorities or requirements change.
+👉 3. Working software over comprehensive documentation: Focus on delivering usable product increments.
+👉 4. Individuals and interactions over processes and tools: People and communication are valued more than rigid procedures.
+
+➤ Main Goals of Agile:
+***********************
+👉 Deliver value to the customer early and frequently.
+👉 Improve transparency, communication, and adaptability.
+👉 Reduce project risk through continuous feedback and testing.
+
+➤ Agile Process Flow (Simplified):
+************************************
+1️⃣ Define requirements (user stories)
+2️⃣ Plan the sprint (what to build this cycle)
+3️⃣ Develop & test
+4️⃣ Review with stakeholders
+5️⃣ Retrospect (analyze what went well and what didn’t)
+
+➤ Popular Agile Frameworks:
+*****************************
+👉 Scrum – Works in fixed sprints with roles like Product Owner, Scrum Master, and Developers.
+👉 Kanban – Focuses on continuous delivery using a visual board to track workflow.
+👉 Extreme Programming (XP) – Emphasizes technical excellence and continuous improvement.
+
+######################################
+📘 Agile Terminologies You Must Know
+######################################
+➤ 1️⃣ Agile Manifesto:
+=======================
+👉 A set of 4 values and 12 principles that form the foundation of Agile methodology.
+👉 It guides how teams should collaborate, adapt, and deliver products.
+
+➤ 2️⃣ Iteration / Sprint:
+===========================
+👉 A short, fixed period (usually 1–4 weeks) in which a specific set of tasks is planned, developed, tested, and delivered.
+👉 Each sprint ends with a working product increment.
+
+➤ 3️⃣ User Story:
+===================
+👉 A short, simple description of a feature from the end-user’s perspective.
+👉 Format: “As a [user], I want [feature] so that [benefit].”
+👉 Example: “As a customer, I want to reset my password so that I can recover my account easily.”
+
+➤ 4️⃣ Product Backlog:
+========================
+👉 A prioritized list of all features, enhancements, and bug fixes needed for the product.
+👉 Managed by the Product Owner.
+👉 Items in the backlog are often written as user stories.
+
+➤ 5️⃣ Sprint Backlog:
+========================
+👉 A subset of the product backlog chosen for a specific sprint.
+👉 It contains all the tasks the team commits to complete in that sprint.
+
+➤ 6️⃣ Product Owner (PO):
+===========================
+👉 Represents the customer or business side.
+👉 Responsible for defining the product vision, prioritizing backlog items, and maximizing value.
+
+➤ 7️⃣ Scrum Master:
+======================
+👉 Acts as a coach/facilitator for the team.
+👉 Ensures that the Agile principles are followed and removes impediments (barriers to progress).
+
+➤ 8️⃣ Development Team:
+=========================
+👉 The group of cross-functional professionals who design, build, and test the product.
+👉 Includes developers, testers, designers, etc.
+
+➤ 9️⃣ Increment:
+==================
+👉 The working product or usable piece of software delivered at the end of each sprint.
+👉 It must be potentially shippable.
+
+➤ 🔟 Definition of Done (DoD):
+================================
+👉 A clear checklist that defines when a user story or task is considered complete.
+👉 Example: Code written → tested → reviewed → integrated → deployed.
+
+➤ 1️⃣1️⃣ Burndown Chart:
+=========================
+👉 A graph that shows how much work remains in the sprint.
+👉 Helps track progress and predict if the team will finish on time.
+
+➤ 1️⃣2️⃣ Velocity:
+===================
+👉 The amount of work a team can complete in one sprint, usually measured in story points.
+👉 Used to forecast future sprints.
+
+➤ 1️⃣3️⃣ Daily Stand-up (Daily Scrum):
+=======================================
+👉 A short 15-minute daily meeting where team members discuss:
+➤ What they did yesterday
+➤ What they will do today
+➤ Any blockers or issues
+
+➤ 1️⃣4️⃣ Sprint Review:
+========================
+👉 Conducted at the end of a sprint to demonstrate the completed work to stakeholders and gather feedback.
+
+➤ 1️⃣5️⃣ Sprint Retrospective:
+================================
+👉 A meeting after each sprint where the team discusses what went well, what didn’t, and what can be improved.
+
+➤ 1️⃣6️⃣ Epic:
+===============
+👉 A large user story that can be broken down into multiple smaller stories.
+👉 Example: “User Management” could be an epic with smaller stories like login, signup, and reset password.
+
+➤ 1️⃣7️⃣ Story Points:
+=======================
+👉 A relative measure used to estimate the effort, complexity, and time required for a user story.
+👉 Teams often use Fibonacci series (1, 2, 3, 5, 8, 13, …) for estimation.
+
+➤ 1️⃣8️⃣ Kanban Board:
+=======================
+👉 A visual tool that displays work items in different stages like To Do → In Progress → Done.
+👉 Helps track progress and manage workflow easily.
+
+###################################################
+📄 Difference Between Requirements and User Story
+###################################################
+➤ Although both describe what needs to be built, they differ in style, purpose, and approach — especially in Agile vs traditional methodologies.
+
+➤ 1️⃣ Definition:
+********************
+👉 Requirement:
+=================
+A formal, detailed description of a system’s behavior, feature, or function.
+Used in traditional (Waterfall) projects.
+
+👉 User Story:
+================
+A short, simple statement written from the end-user’s point of view describing what they want and why.
+Used in Agile projects.
+
+➤ 2️⃣ Format:
+**************
+👉 Requirement: Usually written as –
+======================================
+“The system shall allow users to log in using their email and password.”
+
+👉 User Story: Written as –
+=============================
+“As a user, I want to log in using my email and password so that I can access my account.”
+
+➤ 3️⃣ Purpose:
+***************
+👉 Requirement: Focuses on what the system should do.
+👉 User Story: Focuses on what the user needs and why.
+
+➤ 4️⃣ Level of Detail:
+************************
+👉 Requirement: Detailed, technical, and often includes constraints, rules, and acceptance criteria in depth.
+👉 User Story: High-level and lightweight; details are added during discussion with the team.
+
+➤ 5️⃣ Ownership:
+*****************
+👉 Requirement: Typically written and managed by a Business Analyst or Project Manager.
+👉 User Story: Written and managed by the Product Owner with help from the Agile Team.
+
+➤ 6️⃣ Flexibility:
+*******************
+👉 Requirement: Usually fixed once approved — difficult to change later.
+👉 User Story: Flexible — can evolve as customer feedback and priorities change.
+
+➤ 7️⃣ Focus:
+**************
+👉 Requirement: System-focused — describes system capabilities.
+👉 User Story: User-focused — describes user goals and value.
+
+➤ 8️⃣ Example Comparison:
+***************************
+#########################################################################################################################################
+| Aspect               | Requirement                                        | User Story                                                |
+| -------------------- | -------------------------------------------------- | ----------------------------------------------------------|
+| **Definition Style** | Technical & detailed                               | Simple & conversational                                   |
+| **Focus**            | System functionality                               | User needs                                                |
+| **Owner**            | Business Analyst                                   | Product Owner                                             |
+| **Changeability**    | Hard to change                                     | Easy to modify                                            |
+| **Example**          | “System shall send an email after password reset.” | “As a user, I want to receive an email after resetting my |
+|                      |                                                    | password so that I know it was successful.”               |
+#########################################################################################################################################

@@ -1,0 +1,103 @@
+####################
+❄️ Product Backlog
+####################
+👉 So firstly what we do is we create user stories in our product backlog.
+👉 When you have all the user backlog then starts Backlog grooming/Backlog planning
+➤ Bugs that are occuring in our system will also be kept in our product backlog only so it is responsible for holding user story and bug or defects.
+
+#######################################
+❄️ What is the user story template?
+######################################
+➤ It is as a user i want so that it define how the user is going to interact with the application and after interacting what he wants to do these things define our user story template.
+Examples:
+----------
+👉 User Story for Login Feature
+=================================
+
+Issue Type: User Story
+Summary: User should be able to log in to the application
+Priority: High
+Status: Backlog
+Sprint: Not Assigned
+Assignee: Developer A
+Description:
+As a registered user, I want to log in using my email and password so that I can access my account and personalized features.
+
+Acceptance Criteria:
+*********************
+✅ The login page should have fields for email and password.
+✅ Users should be able to enter their credentials and click the Login button.
+✅ The system should validate the credentials against the database.
+✅ If credentials are correct, the user is redirected to the dashboard/homepage.
+✅ If credentials are incorrect, an error message should be displayed.
+✅ The "Forgot Password" option should allow users to reset their password.
+✅ Login should work on both desktop and mobile devices.
+
+Technical Details:
+*******************
+Use JWT Authentication for security.
+Implement login API (POST /api/login).
+Ensure compatibility with OAuth (Google, Facebook login) if required.
+Logging and monitoring of failed login attempts.
+Labels: Authentication, Login, Security
+Attachments:
+(Screenshots, API documentation, or mockups can be attached)
+
+➤ Whenever a bug is reported testers will also follow a template to report a bug in jira 
+
+Example Of Bug Template
+##########################
+
+Bug Details for JIRA Backlog
+Issue Key: BUG-101
+Issue Type: Bug
+Summary: Login button not working on mobile
+Priority: High
+Status: Backlog
+Sprint: Not Assigned
+Assignee: Developer A
+Description:
+Steps to Reproduce:
+
+Open the application on a mobile device (Android/iOS).
+Navigate to the login screen.
+Tap the "Login" button after entering credentials.
+Expected Result:
+
+The user should be logged in successfully.
+Actual Result:
+
+The login button is unresponsive and does not trigger the authentication process.
+Attachments:
+(Screenshots, logs, or recordings can be added here)
+
+Labels: UI, Mobile, Login-Issue
+
+#####################
+❄️ Backlog grooming 
+#####################
+➤ In grooming we have to estimate the time in order to build the user story how much time will it take.
+➤ There will be a meeting of for grooming where everyone is present developers ,owners ,testers etc and they will decide or estimate the time it will take to develop the project.
+➤ These guys will be give a planning poker activity card.
+🔹 Activities:
+✅ Discuss user stories in detail.
+✅ Break down large stories into smaller ones.
+✅ Assign story points using techniques like planning poker.
+✅ Ensure stories have clear acceptance criteria.
+✅ unnecessary backlog items.
+
+###############
+❄️ Scrum team 
+###############
+➤ It is basically a team of small small size of 6-9 consists of developers & testers
+➤ Every scrum team we have to take them to this grooming meeting.
+
+####################
+❄️ Sprint planning
+####################
+➤ Here we will decide to build the user stories how much time will it take .
+Eg: If sprint duration is 2 weeks then that means the time given to complete the user story is given as 2 weeks and we have to finish the task within that period.
+➤ Here we also decide which user stories are going to be put into the sprint backlog.
+➤ We will look at the complexity points and based on that an estimated time is allocated to complete that user story.
+➤ The user stories that I am going to put in the sprint backlogs are the ones that are going to be developed.
+➤ Like this each scrum team has its sprint backlog and each of them have a time allocated to them when they start the development the timer starts and they have to complete the work given to them within the given number of days. 
