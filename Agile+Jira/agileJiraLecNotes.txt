@@ -4,6 +4,7 @@
 👉 So firstly what we do is we create user stories in our product backlog.
 👉 When you have all the user backlog then starts Backlog grooming/Backlog planning
 ➤ Bugs that are occuring in our system will also be kept in our product backlog only so it is responsible for holding user story and bug or defects.
+➤ Product backlog keeps getting updated. Product owners and business analysts put user stories in the product backlog. Defects are put by the testers.  
 
 #######################################
 ❄️ What is the user story template?
@@ -91,13 +92,18 @@ Labels: UI, Mobile, Login-Issue
 ###############
 ➤ It is basically a team of small small size of 6-9 consists of developers & testers
 ➤ Every scrum team we have to take them to this grooming meeting.
+➤ Every scrum team will have a scrum master he is the team lead.
 
 ####################
 ❄️ Sprint planning
 ####################
 ➤ Here we will decide to build the user stories how much time will it take .
 Eg: If sprint duration is 2 weeks then that means the time given to complete the user story is given as 2 weeks and we have to finish the task within that period.
+➤ After sprint planning the duration is calculated which should be in between 3 to 4 weeks if its more than that then we will remove some stories from the sprint backlog.
 ➤ Here we also decide which user stories are going to be put into the sprint backlog.
+➤ The amount of user stories that we put in the sprint backlog should not exceed more than 4 weeks.
 ➤ We will look at the complexity points and based on that an estimated time is allocated to complete that user story.
 ➤ The user stories that I am going to put in the sprint backlogs are the ones that are going to be developed.
 ➤ Like this each scrum team has its sprint backlog and each of them have a time allocated to them when they start the development the timer starts and they have to complete the work given to them within the given number of days. 
+➤ After the sprint is started mean that timer is strated and development begins we will login to jira and there we will start working on the story which is assigned to us we can see there infront of the story either our name will be written or tech lead will gmail me what all works i need to do
+➤ Once we start working on the project daily stand up meetings and status calls will happen. During these meetings we will tell what all work we did yesterday what all work we will do today and also if we are facing any issues in the development or not.

@@ -1,0 +1,58 @@
+############################
+❄️ What is apache kafka ?
+###########################
+➤ It acts as mediator to exchange messages(Message broker).
+➤ Kafka is very useful for real time data exchange 
+➤ Publisher will publish the message and subscriber will consume the message 
+
+Example of kafka: 
+🧠 Scenario : 10 customers place orders at udupi hotel 
+Step1: Customer place orders 
+✅ Customer app (Producer) -> publishes each order to kafka (order_topic).
+✅ Udupi hotel (Consumer) -> Subscribes to order_topic and consumes the orders in real time.
+
+
+🔄 Kafka Flow:
+
+10 Customers ---> [Kafka: order_topic] ---> Udupi Hotel App
+
+Step 2: Udupi Hotel Accepts the Orders
+✅ Udupi Hotel (Producer) → Publishes an "Order Accepted" event to order_status_topic.
+✅ Customer App (Consumer) → Subscribes to order_status_topic and receives notifications.
+
+🔄 Kafka Flow:
+
+Udupi Hotel ---> [Kafka: order_status_topic] ---> 10 Customers
+🔹 Summary of the Pub/Sub Model
+Step	Producer	Kafka Topic	Consumer	Purpose
+Customer places order	Customer App	order_topic	Udupi Hotel App	Order received at restaurant
+Udupi Hotel accepts order	Udupi Hotel App	order_status_topic	Customer App	Order confirmation notification
+
+🔹 When to Store in Database?
+✔️ YES – When the customer places an order → Store in DB (orders table).
+✔️ YES – When the order is completed → Update order status in DB.
+❌ NO – For real-time updates (use Kafka instead).
+
+
+➤ We will supply the data in the form of json to the rest api , producer/publisher inside the rest API we are copy the data to the java object then we perform the operations that we need to perform on that data.
+➤ Then the producer will take the data in json or xml format and it will publish that data or message to kafka. So basically the job of publisher is to store the message in kafka.
+➤ On the other side we have consumer/subscriber now once this subscriber has subscribed to kafka then the kafka will send that message to the subscriber app.
+➤ So publisher will publish the message to the kafka and the consumer will consume the message from the kafka.Like this 1000 of messages are published and all those who are subscriber can see those messages.
+
+#######################
+❄️ Kafka Architecture
+#######################
+➤ There are 5 major things in kafka 
+👉 Zookeeper - This provides environment to run kafka server 
+👉 Kafka server - This acts as message broker 
+👉 Kafka topic - It is used to store and queue messages 
+👉 Publisher - This will push messages to kafkatopic 
+👉 Subscriber - This will fetch the message that is pushed to kafka by publisher.
+
+➤ Now we are going to setup kafka in our local system so if anyone else runs it they wont be able to use it for solving this we create our kafka server in the dev server in aws
+➤ There we will do all the setups required for kafka and after that we will pass the url to the developer using this url they can access or communicate using kafka. 
+
+####################################
+❄️ Steps to setup kafka in windows 
+####################################
+➤ Step 1 : Download zookeeper 

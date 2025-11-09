@@ -196,3 +196,174 @@ Used in Agile projects.
 | **Example**          | “System shall send an email after password reset.” | “As a user, I want to receive an email after resetting my |
 |                      |                                                    | password so that I know it was successful.”               |
 #########################################################################################################################################
+
+##################
+🧩 What is Jira?
+##################
+➤ Definition:
+***************
+👉 Jira is a project management and issue-tracking tool developed by Atlassian.
+👉 It is widely used by Agile teams to plan, track, and manage software development projects.
+👉 Jira supports Agile frameworks like Scrum, Kanban, and hybrid models, making it ideal for sprint planning, tracking progress, and managing backlogs.
+
+➤ Full Form (Fun Fact):
+*************************
+Jira’s name comes from the Japanese word “Gojira”, which means Godzilla 🦖 — it was originally created to track bugs and issues for software projects.
+
+➤ Main Purpose:
+*****************
+👉 Jira helps teams to:
+✔️ Manage tasks, bugs, and user stories
+✔️ Organize sprints and backlogs
+✔️ Visualize progress with boards and reports
+✔️ Improve team collaboration and productivity
+
+➤ Key Features of Jira:
+*************************
+👉 1️⃣ Issue Tracking:
+=======================
+✔️ Tracks all work items (called issues) such as tasks, bugs, or stories.
+✔️ Each issue has details like assignee, priority, status, due date, and comments.
+
+👉 2️⃣ Scrum Boards:
+=====================
+✔️ Used by Scrum teams to manage sprint-based work.
+✔️ Displays To Do → In Progress → Done columns for visibility.
+
+👉 3️⃣ Kanban Boards:
+======================
+✔️ Used for continuous delivery projects (no fixed sprint).
+✔️ Helps visualize workflow and limit work in progress (WIP).
+
+👉 4️⃣ Backlog Management:
+===========================
+✔️ Stores all upcoming user stories, tasks, and bugs.
+✔️ Teams can prioritize and move items into sprints easily.
+
+👉 5️⃣ Reports & Dashboards:
+=============================
+✔️ Provides visual insights like Burndown Charts, Velocity Reports, and Sprint Reports.
+✔️ Helps track progress and identify bottlenecks.
+
+👉 6️⃣ Workflow Customization:
+==============================
+✔️ You can define custom workflows (status transitions like “Open → In Progress → Done”).
+✔️ Each project can have its own workflow and rules.
+
+👉 7️⃣ Integration:
+===================
+✔️ Integrates with tools like Confluence, Bitbucket, Slack, GitHub, etc.
+✔️ Supports automation and plugins from the Atlassian Marketplace.
+
+➤ Common Jira Terminologies:
+******************************
+👉 Project: A collection of issues related to one product or team.
+👉 Issue: A single work item (bug, task, story, epic).
+👉 Epic: A large body of work broken into smaller stories.
+👉 Story: A user requirement or feature request.
+👉 Sprint: A time-boxed period (usually 2 weeks) for completing a set of tasks.
+👉 Assignee: The person responsible for completing a task.
+👉 Reporter: The person who created or logged the issue.
+
+➤ Why Agile Teams Use Jira:
+****************************
+✅ Centralized platform for managing team collaboration and visibility
+✅ Helps track progress in real time
+✅ Supports continuous improvement through reports and retrospectives
+✅ Highly customizable for any workflow or industry
+
+➤ Example Use Case:
+**********************
+💡 A software team uses Jira to:
+1️⃣ Create user stories in the backlog.
+2️⃣ Plan the sprint by selecting top-priority stories.
+3️⃣ Track progress on the Scrum board.
+4️⃣ Review sprint performance using burndown charts.
+
+######################################
+🔁 Jira Workflow (Issue Life Cycle)
+######################################
+➤ Definition:
+***************
+👉 A Jira workflow represents the life cycle of an issue — from creation to completion.
+👉 It defines statuses, transitions, and rules that describe how a task or issue moves through various stages of work.
+
+🧭 1️⃣ Basic Idea:
+*******************
+➤ Every issue (like a task, story, or bug) in Jira goes through a workflow that looks like this:
+➤ To Do → In Progress → In Review → Done
+➤ This can be customized as per the project’s needs.
+
+➤ 2️⃣ Key Components of a Jira Workflow:
+*****************************************
+👉 a) Status:
+Represents the current state of an issue.
+Examples:
+✔️ To Do → work not started
+✔️ In Progress → work is ongoing
+✔️ In Review → work completed and awaiting review
+✔️ Done → work finished and accepted
+
+👉 b) Transition:
+Defines how an issue moves from one status to another.
+Example:
+✔️ “Start Progress” moves issue from To Do → In Progress
+✔️ “Submit for Review” moves In Progress → In Review
+✔️ “Mark as Done” moves In Review → Done
+
+👉 c) Conditions:
+✔️ Rules that control when a transition is allowed.
+Example: Only the assignee can move a ticket from In Progress to Done.
+
+👉 d) Validators:
+✔️ Check if required fields or conditions are met before transition.
+Example: Ensuring the “Resolution” field is filled before moving to Done.
+
+👉 e) Post Functions:
+✔️ Automatic actions triggered after a transition.
+Example:
+✔️ Automatically assign the issue to a reviewer.
+✔️ Send a notification to the team.
+
+⚙️ 3️⃣ Typical Workflow Stages in Jira:
+*****************************************
+############################################################################################################
+| Stage             | Description                               | Example Action                           |
+| ----------------- | ----------------------------------------- | ---------------------------------------- |
+| **To Do / Open**  | Work is planned but not started.          | Task created and added to backlog.       |
+| **In Progress**   | Work has started.                         | Developer working on the story.          |
+| **In Review**     | Task completed and under testing/review.  | QA verifies the code or feature.         |
+| **Done / Closed** | Work successfully completed and accepted. | Product Owner approves and closes issue. |
+############################################################################################################
+
+🧩 4️⃣ Types of Jira Workflows:
+******************************
+👉 a) Simple Workflow:
+✔️ To Do → In Progress → Done
+✔️ Used for small projects or Kanban boards.
+
+👉 b) Advanced Workflow:
+✔️ To Do → In Progress → Code Review → Testing → Done
+✔️ Used for larger, Scrum-based or multi-team projects.
+
+📊 5️⃣ Workflow Customization:
+*******************************
+👉 Admins can customize workflows based on team needs:
+✔️ Add or remove statuses
+✔️ Rename transitions
+✔️ Apply automation rules (like auto-assign or auto-close)
+👉 You can create different workflows for different issue types (e.g., Bug vs Task).
+
+💡 6️⃣ Real Example (Software Team):
+*************************************
+1️⃣ Developer creates a new story → To Do
+2️⃣ Starts coding → In Progress
+3️⃣ Submits for testing → In Review
+4️⃣ QA tests and approves → Done
+
+✅ 7️⃣ Benefits of Jira Workflows:
+************************************
+👉 Clear visibility into each issue’s progress
+👉 Better accountability — everyone knows who’s doing what
+👉 Consistent process across all teams
+👉 Easy automation of repetitive steps
