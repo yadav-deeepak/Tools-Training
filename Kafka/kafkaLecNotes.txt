@@ -55,4 +55,33 @@ Udupi Hotel accepts order	Udupi Hotel App	order_status_topic	Customer App	Order 
 ####################################
 ❄️ Steps to setup kafka in windows 
 ####################################
-➤ Step 1 : Download zookeeper 
+➤ Step-1 : Download Zookeeper:
+==========
+   URL : https://dlcdn.apache.org/zookeeper/zookeeper-3.9.2/apache-zookeeper-3.9.2-bin.tar.gz
+   URL : https://dlcdn.apache.org/zookeeper/zookeeper-3.8.4/apache-zookeeper-3.8.4-bin.tar.gz
+
+➤ Step-2 : Download Apache Kafka:
+===========
+	URL : https://downloads.apache.org/kafka/3.8.0/kafka_2.12-3.8.0.tgz
+
+➤ Step-3 : Set Path of ZOOKEEPER in Environment variables upto bin folder.
+==========
+➤ Step 4: Copy "zookeeper.properties" and "server.properties" files from "kafka/config" folder to "kafka/bin/windows" folder.
+==========
+➤ Step-5 : Start Zookeeper server from "kafka/bin/windows" root folder
+===========
+Command : zookeeper-server-start.bat zookeeper.properties
+
+➤ Step-6: Start Kafka Server using below command from "kafka/bin/windows" folder
+==========
+Command : kafka-server-start.bat server.properties
+
+Note: If kafka server is stopped, delete kafka logs from temp folder and try again to start kafka server
+
+➤ Step-7 : Create Kakfa Topic from "kafka/bin/windows" root folder
+=========
+Command : kafka-topics.bat --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic order_topic_1
+
+➤ Step-8 : View created Topics using below command
+==========
+Command : kafka-topics.bat --list --bootstrap-server localhost:9092
