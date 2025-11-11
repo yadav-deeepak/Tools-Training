@@ -116,3 +116,131 @@ If you have 3 partitions and 3 consumers in a group → each consumer reads from
 =================
 ➤ OrderService produces “order-created” event → Topic: orders.
 ➤ InventoryService and PaymentService consume from that topic → take real-time action.
+
+###################################################################
+🧩 🔥 Complete Kafka Setup on Windows (KRaft Mode – No Zookeeper)
+###################################################################
+✅ Works perfectly with Kafka 3.8.0+
+✅ No need for Zookeeper
+✅ Recommended by Apache for new users
+
+🪄 Step 1: Install Java (JDK 8 or higher)
+*******************************************
+➤ Kafka runs on Java.
+➤ Check Java:
+
+java -version
+
+➤ If it shows something like java version "17.0.x", you’re good.
+➤ If not:
+➤ Download from Oracle or Adoptium:
+🔗 https://adoptium.net/temurin/releases/
+
+Install it
+➤ Set up environment variable:
+➤ Search: “Environment Variables” → “Edit system environment variables”
+➤ Add new variable:
+JAVA_HOME = C:\Program Files\Java\jdk-17
+Add %JAVA_HOME%\bin to Path
+
+✅ Verify:
+-----------
+echo %JAVA_HOME%
+java -version
+
+⚙️ Step 2: Download and Extract Kafka
+**************************************
+➤ Go to official Kafka downloads:
+🔗 https://kafka.apache.org/downloads
+
+➤ Download Kafka 3.8.0 (Scala 2.13) →
+👉 https://downloads.apache.org/kafka/3.8.0/kafka_2.13-3.8.0.tgz
+
+➤ Extract the .tgz file twice (first .tgz, then .tar) using 7-Zip or WinRAR.
+
+Move it to:
+C:\kafka\kafka_2.13-3.8.0
+
+🧭 Step 3: Open Command Prompt and Navigate
+**********************************************
+cd C:\kafka\kafka_2.13-3.8.0
+
+➤ Now your prompt should look like:
+C:\kafka\kafka_2.13-3.8.0>
+
+⚡ Step 4: Format Kafka Storage (KRaft Mode Init)
+***************************************************
+➤ Kafka needs to initialize internal metadata before running.
+➤ Run this command:
+
+.\bin\windows\kafka-storage.bat format -t %RANDOM% --config .\config\kraft\server.properties
+
+🧠 What this does:
+===================
+➤ Generates a random cluster ID
+➤ Formats the local logs
+➤ Prepares Kafka to start in KRaft mode
+
+✅ You’ll see a message like:
+-------------------------------
+Formatting was successful.
+
+🚀 Step 5: Start Kafka Broker
+*******************************
+➤ Run:
+.\bin\windows\kafka-server-start.bat .\config\kraft\server.properties
+
+✅ If it starts correctly, you’ll see:
+INFO [KafkaServer id=1] started (kafka.server.KafkaServer)
+
+🎉 Kafka is now running locally on localhost:9092
+👉 Keep this window open — don’t close it.
+
+🧪 Step 6: Create a Topic
+**************************
+➤ Open a new Command Prompt:
+cd C:\kafka\kafka_2.13-3.8.0
+
+➤ Create a topic named “test-topic”:
+--------------------------------------
+.\bin\windows\kafka-topics.bat --create --topic test-topic --bootstrap-server localhost:9092 --partitions 1 --replication-factor 1
+
+➤ List topics to confirm:
+--------------------------
+.\bin\windows\kafka-topics.bat --list --bootstrap-server localhost:9092
+
+💬 Step 7: Start a Producer (Send Messages)
+**********************************************
+➤ In another new Command Prompt:
+
+cd C:\kafka\kafka_2.13-3.8.0
+.\bin\windows\kafka-console-producer.bat --topic test-topic --bootstrap-server localhost:9092
+
+➤ Now type any message and press Enter (each line = 1 message).
+
+📥 Step 8: Start a Consumer (Read Messages)
+********************************************
+➤ In another new Command Prompt:
+
+cd C:\kafka\kafka_2.13-3.8.0
+.\bin\windows\kafka-console-consumer.bat --topic test-topic --bootstrap-server localhost:9092 --from-beginning
+
+➤ You’ll see all messages you typed in the producer terminal 🎯
+
+🧹 Step 9: Stop Kafka
+***********************
+➤ When done:
+➤ Go to the Kafka server terminal
+➤ Press Ctrl + C
+
+✅ Kafka Setup Summary
+***********************
+####################################################
+| Component    | Status                     | Port |
+| ------------ | -------------------------- | ---- |
+| Kafka Broker | ✅ Running                | 9092 |
+| Zookeeper    | ❌ Not Needed             |      |
+| Topic        | ✅ Created (`test-topic`) |      |
+| Producer     | ✅ Working                |      |
+| Consumer     | ✅ Working                |      |
+###################################################

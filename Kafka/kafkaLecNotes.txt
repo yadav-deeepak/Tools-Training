@@ -85,3 +85,306 @@ Command : kafka-topics.bat --create --bootstrap-server localhost:9092 --replicat
 ➤ Step-8 : View created Topics using below command
 ==========
 Command : kafka-topics.bat --list --bootstrap-server localhost:9092
+
+###############################################
+❄️ How a producer app & consumer app is build 
+###############################################
+➤ So let us suppose that we have two services customer service and hotel service app 
+➤ Both are running on different server and are connected to kafka server so here customer service will act as a producer it will produce an order an put that order in the kafka topic .
+➤ Hotel service will keep on checking the kafka topic moment a message is pushed to kafka topic hotel app will retrieve that message.
+
+✨ How to implement this ??
+*****************************
+☃️ Producer code 
+++++++++++++++++++
+
+👉 Step 1: Start your kafka server
+==================================== 
+➤ First I will build customer app in order to interact with kafka our customer app will need kafak url to be configured in my project we also need to provide what topic should it connect to in my kafka server.
+➤ Create a new spring project add spring web ,spring for apache kafka and spring for apache kafka streams dependency in your project.
+➤ Using these dependencies our spring boot will be able to interact with kafka with all the built in classes that are provided 
+
+👉 Step 2: In order to connect our spring boot app with kafka we will create a configuration class.
+=====================================================================================================
+➤ Configuration classes are the classes that will start running as soon as i start/run my spring boot app.
+➤ We will build a package constants in which we will keep all the urls here we will keep our kafka topic and kaka url that will be required for us to connect with kafka.
+
+package com.kafkalectures.constants;
+
+public class AppConstants {
+
+	public static final String TOPIC = "order_topic";
+	public static final String KAFKA_HOST = "localhost:9092";
+
+}
+
+👉 Step 3: Create an entity class  
+==================================
+package com.psa.entity;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class Order {
+
+	private String id;
+    private String name;
+	private Double price;
+	private String email;
+	
+	@Override
+	public String toString() {
+		return "Order [id=" + id + ", name=" + name + ", price=" + price + ", email=" + email + "]";
+	}
+}
+
+👉 Step 4: Create a kafka config class for producer/publishing messages
+======================================================================== 
+package com.kafkalectures.config;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.serialization.StringSerializer;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.core.DefaultKafkaProducerFactory;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.core.ProducerFactory;
+import org.springframework.kafka.support.serializer.JsonSerializer;
+
+
+@Configuration
+public class KafkaProduceConfiguration {
+
+	@Bean
+	public ProducerFactory<String, Order> producerFactory() {
+
+		Map<String, Object> kafkaProps = new HashMap<>();
+
+		kafkaProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, AppConstants.KAFKA_HOST);
+		kafkaProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+		kafkaProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+
+		return new DefaultKafkaProducerFactory<>(kafkaProps);
+	}
+
+	@Bean
+	public KafkaTemplate<String, Order> kafkaTemplate() {
+		return new KafkaTemplate<>(producerFactory());
+	}
+
+}
+
+➤ We are using object class here because in the object class we can store any kind of data.
+➤ BOOTSTRAP_SERVERS_CONFIG : It means the url through which I am going to access the kafka.
+➤ Here the producerFactory() method has all the details to interact with the kafka server .
+
+Note: JsonSerializer converts a Java object (like your Order object) into a JSON string, and then into bytes before sending it to Kafka.
+➤ StringSerializer is used because we are going to send some string messages to kafka also so it will convert it into bytes and then send it to kafka.
+
+👉 Step 5: Create service class 
+===================================
+package com.kafkalectures.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.stereotype.Service;
+
+
+@Service
+public class OrderService {
+
+	@Autowired
+	private KafkaTemplate<String, Order> kafkaTemplate;
+    //this consist of url of kafka, jsonSerializer, StringSerializer
+
+	public String addMsg(Order order) {
+
+		// sends msg to kafka topic
+		kafkaTemplate.send(AppConstants.TOPIC, order);
+
+		return "Msg Published To Kafka Topic";
+	}
+}
+
+👉 Step 6: Create Rest Controller class 
+=========================================
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/api/v1/order")
+public class OrderRestController {
+
+	@Autowired
+	private OrderService service;
+
+	@PostMapping("/create")
+	public String createOrder(@RequestBody Order order) {
+		String response = service.addMsg(order);
+		return response;
+	}
+
+}
+
+☃️ Consumer code 
+++++++++++++++++++
+👉 Step 1: Create constants class to define url & topic to consume data
+**********************************************************************
+package com.kafkalectures.constants;
+
+public class AppConstants {
+
+	public static final String TOPIC = "order_topic";
+	public static final String KAFKA_HOST = "localhost:9092";
+
+}
+
+👉 Step 2: Create a entity/model class
+***************************************
+package com.kafkalectures.entity;
+
+public class Order {
+
+	private String id;
+        private String name;
+	private Double price;
+	private String email;
+
+	//Getter and Setter
+
+	@Override
+	public String toString() {
+		return "Order [id=" + id + ", name=" + name + ", price=" + price + ", email=" + email + "]";
+	}
+
+}
+
+👉 Step 3: Create Config clas to consume messages
+***************************************************
+package com.kafkalectures.config;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.common.serialization.StringDeserializer;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
+import org.springframework.kafka.core.ConsumerFactory;
+import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
+import org.springframework.kafka.support.serializer.JsonDeserializer;
+
+
+@Configuration
+public class KafkaConsumerConfig {
+
+	@Bean
+	public ConsumerFactory<String, Order> consumerFactory() {
+
+		Map<String, Object> kafkaConfigProps = new HashMap<String, Object>();
+
+		kafkaConfigProps .put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, AppConstants.KAFKA_HOST);
+		kafkaConfigProps .put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+		kafkaConfigProps .put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
+
+		return new DefaultKafkaConsumerFactory<>(kafkaConfigProps, new StringDeserializer(), new JsonDeserializer<>());
+
+	}
+
+	@Bean
+	public ConcurrentKafkaListenerContainerFactory<String, Order> kafkaListnerFactory() {
+
+		ConcurrentKafkaListenerContainerFactory<String, Order> factory = 
+				new ConcurrentKafkaListenerContainerFactory<>();
+
+		factory.setConsumerFactory(consumerFactory());
+
+		return factory;
+	}
+
+}
+
+➤ ConcurrentKafkaListenerContainerFactory : This method will help us to fetch that particular message.
+
+👉 Step 4: Create Config class to consume messages
+****************************************************
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.kafka.annotation.KafkaListener;
+
+
+@SpringBootApplication
+public class Application {
+
+	public static void main(String[] args) {
+		SpringApplication.run(Application.class, args);
+	}
+
+	@KafkaListener(topics = AppConstants.TOPIC, groupId="group_customer_order")
+	public void kafakSubscriberContent(String order) {
+		System.out.print("_____________ Msg fecthed From Kafka_________________");
+		System.out.println(order);
+		
+	}
+}
+
+➤ Whent the Application class runs then the kafakSubscriberContent() method will automatically run 
+➤ @KafkaListener(topics = AppConstants.TOPIC, groupId="group_customer_order") : Using this it will automatically go the the given topic and from there it will automatically starts fetching the data present in that topic.
+
+👉 Step 5: Create a service class 
+************************************
+
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.stereotype.Service;
+
+@Service
+public class KafkaConsumerService {
+
+    private String latestMessage; // Stores the latest Kafka message
+
+    @KafkaListener(topics = AppConstants.TOPIC, groupId = "group_customer_order")
+    public void consumeMessage(String order) {
+        System.out.println("_____________ Msg fetched from Kafka _________________");
+        System.out.println(order);
+        this.latestMessage = order; // Store the message for retrieval
+    }
+
+    public String getLatestMessage() {
+        return latestMessage; // Expose latest message for the controller
+    }
+}
+
+👉 Step 6: Create a controller class 
+***************************************
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/kafka")
+public class KafkaMessageController {
+
+    private final KafkaConsumerService kafkaConsumerService;
+
+    public KafkaMessageController(KafkaConsumerService kafkaConsumerService) {
+        this.kafkaConsumerService = kafkaConsumerService;
+    }
+
+    @GetMapping("/latest-message")
+    public String getLatestKafkaMessage() {
+        return kafkaConsumerService.getLatestMessage();
+    }
+}
