@@ -1,0 +1,36 @@
+#####################
+❄️ What is Docker ?
+####################
+➤ Docker will make our application compatible to run on different platforms.
+➤ Docker will make our application portable we can run our application on any server and it will run for sure.
+➤ Resolves compatibility problem using containerization 
+➤ Docker will help us to install our software on different server without worrying about compatibility issue
+➤ To deploy same application on multiple servers for load balancing we need not manually install technology stack (like Angular 18v, java 17V etc) manually one by one if docker is not used
+➤ Software updates can be done easily on multiple machines using docker
+
+👉 Note:
+✔ Docker Engine acts as a bridge between the container and the host OS
+✔ Containers don’t have their own kernel, they use the host’s kernel
+✔ Docker Engine manages containers but does not create them—it runs & controls them
+
+➤ We will create a linux VM and install linux OS in it on top of linux OS we will also install Docker Engine in it.
+➤ Our application will run in an isolated environment inside the linux vm this isolated environment is called as docker container.
+➤ Docker engine will act as a bridge that will help us to run docker container inside the Linux OS.
+➤ Docker container will provide us an environment where we can run our app code it will also provide us all the softwares that are required to run that application this container will run inside linux system but for this container to run inside the linux OS the Docker engine will act as a bridge.
+
+########################
+❄️ Docker Architecture 
+########################
+➤ The architecture of docker consists of 4 major files : 
+👉 Docker file: Here we will provide instructions to create docker image 
+➤ Here we will write the depedencies that we need to download + app code jar 
+➤ We write docker file inside the root directory of spring boot app .
+
+👉 Docker image: Application package with dependencies of it 
+➤ Will consist of all the softwares and the app code that we need to run.
+
+👉 Docker registry: Its a hub to store docker images
+➤ Here we store the docker image just like maven has a library of dependencies we have docker registry .
+
+👉 Docker Container: Isolated environment to run docker image
+➤ We will pull the image from the docker hub and then we will create docker container to run this container we require docker engine so that our docker containers can run easily on the linux server.
