@@ -34,3 +34,35 @@
 
 👉 Docker Container: Isolated environment to run docker image
 ➤ We will pull the image from the docker hub and then we will create docker container to run this container we require docker engine so that our docker containers can run easily on the linux server.
+
+➤ Dockers are best suitable to run on linux 
+
+#######################
+❄️ Installing Docker 
+######################
+➤ Open aws and there create an ec2 instance 
+➤ Connect to the ec2 instance and then install docker in your linux vm 
+➤ Use the commands given below this will install the docker in your linux OS 
+
+sudo yum update -y 
+sudo yum install docker -y
+sudo service docker start
+sudo usermod -aG docker ec2-user
+exit
+
+➤ After installation is completed again connect to your ec2 instance and check if docker is installed or not run
+docker -v 
+
+docker pull hello-world
+// This command is used to pull the image from the docker hub here we are pulling an image named hello-world from docker hub
+
+➤ docker images : this command is used to give all the images that are present in your local machine 
+
+➤ docker ps : This command will show the container that is currently executing / running.
+docker ps -a : this will show us the container that got executed and in stopped status.
+
+➤ docker run image-name : this command is used to run the docker image
+
+➤ docker system prune -a : In order to remove the containers that are present in stopped status we use this command.
+
+➤ docker stop container-id : This will stop the container .
