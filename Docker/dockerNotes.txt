@@ -210,3 +210,176 @@ If you “dockerize” your Node.js app, it means you’ve created a Docker imag
 *********************
 ➤ Containerization → The concept
 ➤ Dockerization → The practice (using Docker)
+
+############################################################
+🌐 Creating and Running a Docker Image (Access via Browser)
+────────────────────────────────────────────────────────────
+➤ Let’s break this into clear and structured notes 👇
+
+🐳 1️⃣ Running Docker Image from Docker Hub
+────────────────────────────────────────────
+➤ Command:
+
+docker run image-name
+
+👉 This command downloads the image (if not present locally) and runs it as a container.
+
+⚠️ Issue:
+➤ You cannot access the app in your browser directly because no port mapping is done yet.
+
+🧩 2️⃣ Why Port Mapping is Needed?
+─────────────────────────────────────
+➤ Containers run in isolated environments with their own internal network.
+➤ To access the app from your host machine (browser), you must connect the host port to the container’s internal port.
+➤ This process is called Port Mapping.
+
+🔗 3️⃣ Port Mapping Command
+──────────────────────────────
+➤ Syntax:
+
+docker run -p host-port:container-port image-name
+
+➤ Meaning:
+👉 The host-port is the port on your system (or Linux VM).
+👉 The container-port is the port exposed by the application inside the container.
+
+🧠 Example:
+-------------
+docker run -p 9090:9090 image-name
+
+👉 Maps host port 9090 to container port 9090
+👉 Now, the app can be accessed from your browser at:
+
+http://<public-ip>:9090
+
+⚙️ 4️⃣ Running Container in the Background (Detached Mode)
+────────────────────────────────────────────────────────────
+➤ If you want the container to keep running even after closing the terminal 👇
+
+docker run -d -p 9091:9090 image-name
+
+👉 -d = detached mode (runs in background)
+👉 You can continue using the terminal while the container runs.
+
+🛑 5️⃣ Stopping a Running Container
+────────────────────────────────────
+➤ To stop the container:
+
+docker stop container-id
+
+👉 You can find the container ID using:
+
+docker ps
+
+🧱 6️⃣ Important Notes
+──────────────────────────────
+➤ If you run multiple containers on the same VM, each must have a different host port.
+👉 Example:
+
+docker run -d -p 8080:9090 image1
+docker run -d -p 8081:9090 image2
+
+➤ Ensure inbound rules in your security group/firewall allow traffic on the chosen host port (e.g., 8080, 9090).
+👉 Set Custom TCP Rule → Port = host port → Source = Anywhere (IPv4)
+
+✅ Summary Table
+******************
+###########################################################################################################################
+| Task                    | Command                                      | Description                                    |
+| ----------------------- | -------------------------------------------- | ---------------------------------------------- |
+| Run container           | `docker run image-name`                      | Starts container but not accessible in browser |
+| Run with port mapping   | `docker run -p host:container image-name`    | Maps ports for browser access                  |
+| Run in background       | `docker run -d -p host:container image-name` | Keeps container running after terminal close   |
+| View running containers | `docker ps`                                  | Lists active containers                        |
+| Stop container          | `docker stop container-id`                   | Stops a running container                      |
+###########################################################################################################################
+
+################################
+🚀 Advantages of Docker Images
+──────────────────────────────
+
+➤ A Docker Image is the blueprint of a container — it defines what the container will look like and how it will run.
+It contains everything needed for an application: code, libraries, dependencies, configuration, and runtime environment.
+
+Let’s see why Docker images are so powerful 👇
+
+🏗️ 1️⃣ Portability
+──────────────────────────────
+➤ Docker images can run anywhere — on your local system, a cloud server, or a CI/CD pipeline.
+👉 This ensures that the application behaves the same across all environments (no “it works on my system” issues 😅).
+
+🧠 Example:
+You can build an image on your laptop and run it on AWS, GCP, or Azure without any modification.
+
+⚙️ 2️⃣ Consistency & Reliability
+──────────────────────────────
+➤ The image contains the complete environment setup — OS libraries, frameworks, app code, etc.
+👉 So, you always get the same behavior no matter where or how often you deploy it.
+
+🧱 Example:
+A Java app inside an image will always have the same JDK version, Tomcat setup, and configuration every time it runs.
+
+⚡ 3️⃣ Lightweight and Fast Deployment
+──────────────────────────────
+➤ Images are layered and cached, so only changed layers are rebuilt.
+👉 This makes building and deploying much faster compared to traditional VMs.
+👉 Also consumes less disk space and system memory.
+
+🧩 Example:
+If you update one line of code, Docker only rebuilds that part instead of the entire environment.
+
+🔁 4️⃣ Version Control for Environments
+──────────────────────────────
+➤ Docker images can be versioned and tagged just like Git commits.
+👉 Example:
+
+myapp:v1
+myapp:v2
+
+
+You can easily roll back to a previous version if needed.
+
+🧳 5️⃣ Easy Distribution and Sharing
+──────────────────────────────
+➤ Images can be pushed to registries (like Docker Hub, AWS ECR, etc.) and shared with teammates or other systems.
+👉 This makes collaboration and deployment super easy.
+
+🧠 Example:
+Push your app image to Docker Hub → your teammate can pull and run it instantly.
+
+🧱 6️⃣ Reusability and Modularity
+──────────────────────────────
+➤ Images can be built on top of other base images.
+👉 This allows modular design — reuse existing OS or language images like ubuntu, node, python, etc.
+
+🧠 Example:
+You can create your custom image based on:
+
+FROM openjdk:17
+
+
+and then add your Java app — no need to set up JDK manually.
+
+🧩 7️⃣ Simplifies CI/CD Pipeline
+──────────────────────────────
+➤ Docker images make Continuous Integration and Deployment smooth.
+👉 The same image can be tested, deployed, and scaled in production automatically.
+
+🔒 8️⃣ Security and Isolation
+──────────────────────────────
+➤ Each image runs in its own isolated environment, reducing the risk of conflicts or dependency issues.
+
+✅ Summary Table
+*****************
+###################################################################
+| Advantage       | Description                                   |
+| --------------- | --------------------------------------------- |
+| Portability     | Run anywhere — same behavior on all platforms |
+| Consistency     | Fixed environment setup inside image          |
+| Lightweight     | Fast build and low resource usage             |
+| Version Control | Tag and roll back to older versions           |
+| Easy Sharing    | Push/pull from Docker Hub                     |
+| Reusability     | Build on existing base images                 |
+| CI/CD Friendly  | Seamless integration into pipelines           |
+| Secure          | Isolated environment per container            |
+###################################################################

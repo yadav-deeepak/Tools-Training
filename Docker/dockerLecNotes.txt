@@ -66,3 +66,86 @@ docker ps -a : this will show us the container that got executed and in stopped 
 ➤ docker system prune -a : In order to remove the containers that are present in stopped status we use this command.
 
 ➤ docker stop container-id : This will stop the container .
+
+###################################################################
+❄️ How to create docker image and run that to access from browser 
+###################################################################
+➤ When we run our docker image from the docker hub using this command 
+docker run image-name 
+➤ This command when executed we wont be access our container in browser because it requires port mapping.
+➤ As the container is running inside linux VM . We will have to map linux vm (host port) to container(Container port) this is called as port mapping . To do this perform the following: 
+
+docker run -p host-port:container-port [image name] 
+// This will map the container port number to our host port number (VM port number)
+
+Example: docker run -p 9090:9090 [image-name]
+-> Also run the container in the background 
+✔️ Now you can access the application using this url http://public-ip:host-port(linux VM) 
+
+👉 Note: Dont forget to enable the inbound rule in security group custom IP --> IPV4 anywhere with host port number.
+➤ If you run multiple containers in same linux vm then host port number should be different for every container.
+
+➤ If you want to the the process in the background means if you close the git bash then also it will work then use this command:
+docker run -p -d 9091:9090 image-name
+// This will run our container in the background we can perform other task on the same git bash and our container will still be running on the background.
+➤ To stop the container do docker stop container-id // this command will stop the container.
+
+🌟 What are the advantages of images  
+**************************************
+➤ Let us suppose that we want to install jenkins in our vm to automate the deployment process so one way to do it is without using images manually installing everything other way is using the image to download/install jenkins 
+
+✨ Without image 
+==================
+☃️ If Docker not used then we have to do the following to install jekins in linux vm
+
+Step - 1 : Create Linux VM with Ubuntu, use t2.micro as jekins is heavy software & requires good configuration server
+
+Create Ubuntu VM using AWS EC2 (t2.medium)
+Enable 8080 Port Number in Security Group Inbound Rules
+Connect to VM using ssh cleint
+
+Step-2 : Install Jdk as jekins is java application and requires jdk to run jekins
+
+sudo apt update
+sudo apt install fontconfig openjdk-17-jre
+java -version
+
+Step-3 : Install Jenkins
+sudo wget -O /usr/share/keyrings/jenkins-keyring.asc \
+  https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
+  https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
+  /etc/apt/sources.list.d/jenkins.list > /dev/null
+sudo apt-get update
+sudo apt-get install jenkins
+
+Step-4 : Start Jenkins application using the commands given below
+sudo systemctl enable jenkins
+sudo systemctl start jenkins
+
+Step-5 : Verify Jenkins
+sudo systemctl status jenkins
+
+Step-6 : Open jenkins server in browser using VM public ip. Jekins runs on port 8080 by default
+http://public-ip-address:8080/
+
+Step-7 : Copy jenkins admin pwd
+sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+
+Step-8 : Create Admin Account & Install Required Plugins in Jenkins to start your CI/CD pipeline learning journey
+
+✨ Using docker image 
+=======================
+➤ Install jekins using docker image name - docker run -d -p 8080:8080 jenkins/jenkins
+
+Note Enable Inbound rule in security group custom ip 8080 IPv4 anywhere
+
+➤ Docker image will simplify  our journey to get required softwares in server through sinlge line
+
+➤ Example download Sonarqube using docker image. If not use linux command to do the same.
+
+docker run -d --name sonarqube -p 9000:9000 -p 9092:9092 sonarqube:lts-community
+
+➤ Example download nexus using docker image, If not use linux command to do the same.
+
+docker run -d -p 8081:8081 --name nexus sonatype/nexus3
