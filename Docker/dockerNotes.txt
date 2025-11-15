@@ -383,3 +383,157 @@ and then add your Java app — no need to set up JDK manually.
 | CI/CD Friendly  | Seamless integration into pipelines           |
 | Secure          | Isolated environment per container            |
 ###################################################################
+
+#########################################
+📝 Dockerfile – How to Create & Use It
+─────────────────────────────────────────
+➤ A Dockerfile is a script containing a set of instructions to build a Docker Image.
+Each instruction is executed top to bottom while building the image.
+➤ Dockerfile instructions are UPPERCASE and case-sensitive.
+
+🌟 FROM
+*********
+➤ The FROM instruction specifies the base image on which your application will run.
+➤ It should always be the first instruction.
+➤ Used to define required software/runtime environment.
+
+Syntax:
+-------
+FROM <image>:<tag>
+
+Examples:
+➤ FROM openjdk:21
+➤ FROM eclipse-temurin:17-jdk (✔ recommended → OpenJDK images deprecated)
+➤ FROM mysql:8.0
+
+🌟 MAINTAINER (Deprecated)
+***************************
+➤ Specifies the maintainer of the image.
+➤ Deprecated since Docker 1.13 → Use LABEL instead.
+
+🌟 RUN
+********
+➤ Used to execute commands during image build time.
+➤ Useful for installing packages, configurations, etc.
+
+Examples:
+----------
+RUN git clone <repo-url>  
+RUN mvn clean package
+
+➤ Multiple RUN commands execute sequentially.
+
+🌟 CMD
+*********
+➤ Specifies the default command to run when the container starts.
+➤ If multiple CMDs exist → Only the last one runs.
+➤ Can be overridden during docker run.
+
+Example:
+---------
+CMD "java -jar myapp.jar"
+
+🛑 CMD Override Example:
+========================
+docker run image-id echo "hello world"
+
+→ This overrides CMD and runs hello world instead.
+
+🌟 ENTRYPOINT
+**************
+➤ Works like CMD but cannot be overridden.
+➤ Use ENTRYPOINT when you want your main process to always run.
+
+Example:
+---------
+ENTRYPOINT ["java", "-jar", "app.jar"]
+
+🌟 COPY
+*********
+➤ Copies files/folders from Host Machine → Container.
+➤ Used to copy application source or JAR files.
+
+Example:
+--------
+COPY target/your-app.jar /usr/app/
+
+🌟 ADD
+********
+➤ Similar to COPY, but with extra features:
+➤ Can extract tar files automatically
+➤ Can copy from host machine
+➤ ❌ Cannot download from URL (common interview trap)
+
+Example:
+--------
+ADD target/app.jar /usr/app/
+
+❌ ADD https://file.com/file.jar /usr/app/ → Not allowed
+
+🌟 WORKDIR
+************
+➤ Sets the working directory for subsequent commands (like cd).
+➤ If the folder does not exist, Docker creates it automatically.
+
+Example:
+---------
+WORKDIR /usr/app/
+CMD "java -jar your-app.jar"
+
+🌟 EXPOSE
+***********
+➤ Just documents the port your application runs on.
+➤ Does NOT map ports → That is done using docker run -p.
+
+Example:
+----------
+EXPOSE 9090
+
+⚠️ If your app runs on 8081 and you write EXPOSE 9090, it is wrong.
+
+##############################################
+🔧 How to Create a Dockerfile (Step-by-Step)
+────────────────────────────────────────────
+➤ Step 1 — Create a Dockerfile
+********************************
+vi Dockerfile
+
+Example Dockerfile:
+-------------------
+FROM eclipse-temurin:17-jdk
+LABEL maintainer="Pankaj"
+RUN echo 'run-1'
+RUN echo 'run-2'
+CMD echo 'cmd-1'
+CMD echo 'cmd-2'
+
+Step 2 — Build the Docker Image
+********************************
+docker build -t pankajsiracademy/image1 .
+
+➤ Dot (.) means Dockerfile is in the current directory.
+
+➤ Step 3 — Check Created Images
+*********************************
+docker images
+
+➤ Step 4 — Delete Image
+*************************
+docker rmi image-id
+
+➤ Step 5 — Rebuild the Image
+*******************************
+docker build -t pankajsiracademy/image1 .
+
+➤ Step 6 — Run the Docker Image
+*********************************
+docker run image-id
+
+🛑 Important Notes
+===================
+➤ Only the last CMD in the Dockerfile executes.
+➤ CMD can be overridden using:
+
+docker run image-id <command>
+
+➤ To prevent override → Use ENTRYPOINT.

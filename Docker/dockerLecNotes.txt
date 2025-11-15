@@ -149,3 +149,128 @@ docker run -d --name sonarqube -p 9000:9000 -p 9092:9092 sonarqube:lts-community
 ➤ Example download nexus using docker image, If not use linux command to do the same.
 
 docker run -d -p 8081:8081 --name nexus sonatype/nexus3
+
+##################################
+❄️ How to create a Docker file? 
+#################################
+➤ In order to build a docker file as a developer you should know when to use the following keywords.Dockerfile instructions (FROM, CMD, ADD, etc.) are case-sensitive and must be written in uppercase.
+
+🌟 FROM 
+*********
+➤ The FROM instruction in a Dockerfile specifies the base image for your container or it will be used to specify what softwares should be downloaded to run our app. It is always the first instruction in a Dockerfile because it defines the environment where your application will run
+
+FROM <image>:<tag>
+
+<image> → Name of the base image (e.g., ubuntu, node, python)
+<tag> → (Optional) Specifies the image version
+
+➤ Whatever softwares are required for our app code to run we will write them into our docker file like this 
+Eg: FROM openjdk:21
+FROM mysql:8.0 
+
+🌟 MAINTAINER 
+***************
+➤ This instruction in a docker file was used to specify the name and email address of the person or organization responsible for maintaining the docker image . However as of docker version 1.13 the MAINTAINER instruction is deprecated in favour of using the LABEL instruction to provide metadata about the image.
+
+🌟 RUN 
+*********
+➤ This instruction is used to execute commands inside the docker container during the image build process . It helps you install packages set up confiurations or perform other tasks that need to happen before the image is finalized.
+➤ The RUN instruction in a Dockerfile is used to execute commands during the image build process. 
+
+Example :
+
+RUN 'git clone <repo-url>'
+
+RUN 'mvn clean package'
+
+Note: If you specify multiple RUN instructions in Dockerfile, then those will execute in sequential manner.
+
+🌟 CMD 
+********
+➤ This instruction will specify the default commands that will be executed when a container is started from the image it defines the executable that should be run inside the container when you run docker run without specifying a command.
+➤ This instruction specifies the default command that runs when the container starts.
+
+CMD "java -jar myapp.jar"
+
+Note: when we write multiple CMD instructions in dockerfile, docker will execute only last CMD instruction only.
+
+👉 To create a docker file 
+++++++++++++++++++++++++++++
+➤ Step 1: vi DockerFile  
+FROM openjdk:17 
+// use this FROM eclipse-temurin:17-jdk the openjdk is deprecated.
+MAINTAINER Pankaj
+RUN echo 'run-1'
+RUN echo 'run-2'
+CMD echo 'cmd-1'
+CMD echo 'cmd-2'
+
+➤ Step 2: Create docker image using the command
+-> docker build -t pankajsiracademy/image1 .
+
+=> We have used dot (.) in above command to mention that dockerfile is present in same working directory
+
+➤ Step 3:  To check image created use the command 
+-> docker image
+
+➤ Step 4:  to delete the image
+--> docker rmi image-id
+
+➤ Step 5:  You can again create the image
+--> -> docker build -t pankajsiracademy/image1 .
+
+➤ Step 5: You can again create the image
+--> -> docker build -t pankajsiracademy/image1 .
+
+➤ Step 6: Run your docker image
+--> docker run [image-id]
+
+Note: 
+1. Only last CMD instruction will run
+2. docker run [image-id] echo 'hello world', you will notice now hello world will execute and not the last CMD of docker file
+
+To over come the above said instruction we can use ENTRYPOINT 
+
+🌟 ENTRYPOINT
+**************
+➤ Alternative command for CMD but the advantage is we cant override this command 
+
+Ex1: CMD "java -jar app.jar"
+
+Ex2: ENTRYPOINT ["java", "-jar", "app.jar"]
+
+🌟 Copy 
+*********
+➤ COPY instruction will copy the files from the source to destination 
+➤ It is used to copy application code from host machine to container machine.
+➤ Here source means "HOST Machine" and Destination means "Container machine"
+Ex: COPY target/your-app.jar  /usr/app/
+
+🌟 ADD 
+*******
+➤ ADD instruction will copy the files from source to destination same as COPY but in addition it can extract your compressed tar file 
+➤ Here source can be host machine 
+➤ ADD cannot download from HTTP/S3 URLs—this is a misconception. (Be carefull in interviews)
+Example:
+ADD target/app.jar  /usr/app/
+
+ADD <http-url>  /usr/app/ (Wrong) 
+
+🌟 WORKDIR 
+************
+➤ The WORKDIR instruction sets the working directory (Like cd command )
+➤ If the directory does not exist, Docker will automatically create it
+
+Example: WORKDIR /path/to/directory
+
+COPY target/your-app.jar   /usr/app/
+WORKDIR /usr/app/
+CMD "java -jar your-app.jar"
+
+🌟 EXPOSE 
+***********
+➤ This command is used to specify application is running on which port number. Using this you cant change the port number of application. You are just mentioning that our application is running on the port number 9090
+➤ If our application is running on port number 8081 you are mentioning expose 9090 then it is wrong
+➤ It is optional to use
+
+Example : EXPOSE 9090
