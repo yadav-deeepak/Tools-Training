@@ -274,3 +274,100 @@ CMD "java -jar your-app.jar"
 ➤ It is optional to use
 
 Example : EXPOSE 9090
+
+############################################
+❄️ Dockerizing our spring boot application 
+############################################
+➤ Spring boot: Framework which is used to develop enterprise based applications 
+➤ Spring boot applications will be packaged as a jar file for deployement 
+➤ To runt the jar file we will use command : java -jar <filename.jar>
+➤ To run spring boot application jar file we will use tomcat server as "embedded server" 
+➤ By default the spring boot application will run on port number 8080.
+
+👉 Note: In pom.xml under the build section we will use finalname tag and there we will give the name with which our jar file should be created.
+Eg: 
+<build>
+	<finalName>demo-app</finalName> //This will make sure that our jar file should have the name demo-app
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+
+👉 Step 1: Create docker file 
+*********************************
+➤ We will create the docker file in the root directory of our spring boot application with the name Dockerfile 
+
+FROM eclipse-temurin:17-jdk
+
+COPY target/demo-app.jar  /usr/app/
+// This will copy our demo-app.jar to the /usr/app/ directory.
+
+WORKDIR /usr/app/
+
+EXPOSE 8080
+
+ENTRYPOINT ["java", "-jar", "demo-app.jar"]
+
+✅ Push your code to git hub go to the root directory of your project and from there open git bash initialize git and push it to the git hub remote repository.
+
+👉 Step 2: Install maven and git in the linux VM First and docker also 
+************************************************************************
+sudo yum install git -y // this will install the git on our vm server
+sudo yum install maven -y //this will install maven on linux vm
+➤ Clone git repo in the docker host machine (linux): git clone <http-url>
+➤ Point to project root folder: 
+cd <app-name> and run to generate jar: mvn clean package 
+
+👉 Step 3:  Create docker image and check that
+************************************************ 
+docker build -t dockerusername/repositoryName:<tag>
+//Befor creating the docker image make sure that your are pointing to the directory where your docker file is present.
+
+-> Create repository in your docker hub and then provide the repository name.
+Eg: docker build -t psait/pankajsiracademy:<tag> .
+(
+Here 
+-> psait is username
+-> repositoryname of docker hub
+-> <tag> can
+  a. prod-v1 or prod-v2 for production
+  b. dev-v1 for development environment
+  c. test-v1 for testing environment
+  d. staging-v1 for staging environment
+)
+docker images //check if the image is created or not .
+
+👉 Step 4: Run docker container 
+*********************************
+docker run -d -p 8080:8080 --name psa psait/your-app:tag  
+-d : for detatched mode 
+-p : for port mapping 
+--name psa : We can use this if we want to give the name to our container else we can skip this 
+
+➤ Dont forget to edit the inbound rule in the security group section of your linux vm select custom tcp --> 8080 --> ipv4 anywhere 
+➤ If you forget this step then you wont be able to access the application as your port wont be open for accepting the incoming request
+
+👉 Step 5:  See the image is running or not: docker ps 
+
+👉 Step 6: docker logs <container-id>
+
+👉 Step 7: Access application URL in browser: 
+***********************************************
+http://public-ip:8080/
+
+######################################################
+❄️ Steps to push the docker image to the docker hub
+######################################################
+➤ Loging to docker hub account from bash 
+
+docker login 
+enter username: psait 
+enter password 
+
+➤ push docker image 
+docker push psait/pankajsiracademy:<tag>
+Eg: docker push psait/test:testing-v1

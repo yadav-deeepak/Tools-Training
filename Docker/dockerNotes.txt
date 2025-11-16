@@ -537,3 +537,151 @@ docker run image-id
 docker run image-id <command>
 
 ➤ To prevent override → Use ENTRYPOINT.
+
+############################################
+🚀 Dockerizing a Spring Boot Application
+────────────────────────────────────────────
+➤ Spring Boot is a framework used to build enterprise-level applications.
+➤ Spring Boot applications are packaged as JAR files for deployment.
+➤ To run a Spring Boot JAR, we use:
+
+java -jar <filename>.jar
+
+➤ Spring Boot uses an embedded Tomcat server.
+➤ By default, a Spring Boot app runs on port 8080.
+
+📝 JAR Name Using pom.xml
+───────────────────────────
+➤ In pom.xml, inside <build> section, use <finalName> to specify the jar name:
+
+<build>
+    <finalName>demo-app</finalName> 
+    <plugins>
+        <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+        </plugin>
+    </plugins>
+</build>
+
+
+➤ This ensures your jar name becomes:
+➡ demo-app.jar
+
+🧱 Step 1: Create Dockerfile
+────────────────────────────────
+➤ Place this Dockerfile in the root directory of the Spring Boot project.
+
+FROM eclipse-temurin:17-jdk
+
+COPY target/demo-app.jar /usr/app/
+
+WORKDIR /usr/app/
+
+EXPOSE 8080
+
+ENTRYPOINT ["java", "-jar", "demo-app.jar"]
+
+✔ FROM → Base JDK
+✔ COPY → Move your jar into container
+✔ WORKDIR → Navigate inside container
+✔ EXPOSE 8080 → Document running port
+✔ ENTRYPOINT → Run the jar inside container
+
+🧑‍💻 Step 2: Install Maven, Git, Docker in Linux VM
+────────────────────────────────────────────────────
+➤ Install Git:
+
+sudo yum install git -y
+
+➤ Install Maven:
+
+sudo yum install maven -y
+
+➤ Clone your GitHub repo:
+
+git clone <repo-url>
+
+➤ Move into the project directory:
+
+cd <app-name>
+
+➤ Build jar file using maven:
+
+mvn clean package
+
+➤ Jar will be created under → target/demo-app.jar
+
+🐳 Step 3: Build Docker Image
+────────────────────────────────
+
+docker build -t dockerusername/repositoryName:<tag> .
+
+Example:
+---------
+docker build -t psait/pankajsiracademy:prod-v1 .
+
+✔ Use . to indicate Dockerfile is in the same directory
+✔ Create repo on Docker Hub before pushing
+✔ Tag examples:
+
+prod-v1 → Production
+dev-v1 → Development
+test-v1 → Testing
+staging-v1 → Staging
+
+➤ Check images:
+-----------------
+docker images
+
+🚢 Step 4: Run Docker Container
+────────────────────────────────
+
+docker run -d -p 8080:8080 --name psa psait/your-app:<tag>
+
+➤ -d → Run in background
+➤ -p → Port mapping
+➤ --name psa → (Optional) name for your container
+
+✔ Don’t forget to allow port 8080 in your VM Security Group:
+Inbound Rule → Custom TCP → 8080 → Anywhere IPv4
+➤ If you skip this → App won’t open in browser.
+
+🔍 Step 5: Check Running Container
+────────────────────────────────────
+docker ps
+
+📜 Step 6: View Logs of Container
+──────────────────────────────────
+docker logs <container-id>
+
+🌐 Step 7: Access Application in Browser
+─────────────────────────────────────────
+http://<public-ip>:8080/
+
+📤 Steps to Push Docker Image to Docker Hub
+────────────────────────────────────────────
+1️⃣ Login to Docker Hub
+***********************
+docker login
+
+Enter:
+➤ Username
+➤ Password
+
+2️⃣ Push Image
+***************
+docker push psait/pankajsiracademy:<tag>
+
+Example:
+--------
+docker push psait/pankajsiracademy:testing-v1
+
+✅ Full Process Summary (Quick Revision Sheet)
+────────────────────────────────────────────────
+➤ Build JAR using Maven
+➤ Create Dockerfile
+➤ Build Docker image
+➤ Push image to Docker Hub
+➤ Run image as container
+➤ Access app via browser
