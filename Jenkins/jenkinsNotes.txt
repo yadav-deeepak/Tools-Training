@@ -1,0 +1,422 @@
+#####################
+🚀 What is Jenkins?
+#####################
+➤ Jenkins is an open-source automation server used to automate the build, test, and deployment processes in software development.
+➤ It is one of the most popular tools for implementing CI/CD (Continuous Integration & Continuous Delivery) pipelines.
+
+⭐ Key Points About Jenkins
+*****************************
+➤ Automation Server
+=====================
+👉 Jenkins automates repetitive tasks like building code, running tests, packaging, and deploying applications.
+
+➤ Supports CI/CD
+===================
+👉 Helps developers integrate their code frequently and deliver updates faster.
+
+➤ Plugin-Based Architecture
+=============================
+👉 Jenkins has 2000+ plugins that allow integration with Git, Maven, Docker, AWS, Kubernetes, SonarQube, Slack, etc.
+
+➤ Platform Independent
+=========================
+👉 Works on Windows, Linux, macOS, Docker containers, and even cloud environments.
+
+➤ Free & Open Source
+=====================
+👉 Completely free and maintained by a large community.
+
+➤ Highly Customizable
+=======================
+👉 You can create custom pipelines using Jenkinsfile (Groovy-based script).
+
+🧱 Why Jenkins is Used?
+*************************
+➤ Continuous Integration
+==========================
+👉 Automatically checks code whenever developers push to Git, ensuring the codebase remains stable.
+
+➤ Continuous Delivery/Deployment
+=================================
+👉 Automates software release process → reduce manual effort → fewer errors.
+
+➤ Increase Developer Productivity
+===================================
+👉 Saves time by automating routine tasks.
+
+➤ Improve Code Quality
+=========================
+👉 Automatically runs tests, lint checks, quality scans (SonarQube) on every commit.
+
+⚙️ How Jenkins Works (High Level)
+***********************************
+➤ Developer pushes code → GitHub/GitLab/Bitbucket
+➤ Jenkins automatically detects updates
+➤ Jenkins builds the project (Maven/Gradle)
+➤ Runs tests
+➤ Packages application
+➤ Deploys to servers (Tomcat/AWS/K8s)
+➤ Sends notification (Slack/Email)
+
+###########################################
+🔄 Jenkins CI/CD Flow (Complete Lifecycle)
+###########################################
+➤ Here is the step-by-step CI/CD flow in Jenkins, explained simply and clearly so you can directly put it in your notes.
+
+⚙️ Jenkins CI Flow (Continuous Integration)
+*********************************************
+➤ 1️⃣ Developer writes code
+=============================
+👉 Developer writes code on local machine.
+
+➤ 2️⃣ Code is pushed to Version Control
+=========================================
+👉 GitHub / GitLab / Bitbucket
+
+➤ 3️⃣ Jenkins is triggered automatically
+==========================================
+👉 Using Webhooks, Jenkins gets notified that new code was pushed.
+
+➤ 4️⃣ Jenkins pulls updated code
+==================================
+👉 Jenkins fetches the latest code from the repository.
+
+➤ 5️⃣ Build Phase starts
+===========================
+👉 Jenkins builds the project using tools like
+➤ Maven
+➤ Gradle
+➤ npm
+➤ Docker build
+
+➤ 6️⃣ Automated Test Execution
+================================
+👉 Jenkins runs unit tests, integration tests, static code analysis, etc.
+
+➤ 7️⃣ Quality Check
+=======================
+👉 Tools like SonarQube can be integrated to check code quality.
+
+➤ 8️⃣ Build Artifact generation
+================================
+👉 Jenkins generates build outputs:
+➤ .jar
+➤ .war
+➤ Docker image
+➤ zip package
+
+➤ 9️⃣ Store Build Artifacts
+=============================
+👉 Artifacts are stored in:
+➤ Nexus
+➤ Artifactory
+➤ Jenkins Workspace
+
+📌 This completes CI (Continuous Integration).
+
+🚀 Jenkins CD Flow (Continuous Delivery / Deployment)
+********************************************************
+➤ 1️⃣ Deploy to Testing/QA Environment
+=======================================
+👉 Jenkins deploys artifacts to QA using
+➤ SSH
+➤ Docker
+➤ Kubernetes
+➤ Ansible
+➤ Tomcat
+
+➤ 2️⃣ Automated/Manual Tests in QA
+====================================
+👉 QA team runs additional tests.
+
+➤ 3️⃣ Approval Gate (Optional)
+===============================
+👉 A manager or DevOps engineer approves promotion to production.
+
+➤ 4️⃣ Deploy to Staging
+=========================
+👉 For final checks before production.
+
+➤ 5️⃣ Deploy to Production
+============================
+👉 Jenkins automates deployment using jobs or pipelines.
+➤ Blue-Green Deployment
+➤ Rolling Deployment
+➤ Canary Deployment (with Kubernetes)
+
+➤ 6️⃣ Notifications
+=====================
+👉 Jenkins sends update to Slack/Email on success or failure.
+
+🧱 Jenkins CI/CD High-Level Flow Diagram (Text-Based)
+********************************************************
+Developer → Git Push 
+        → Webhook triggers Jenkins
+                → Jenkins pulls code
+                        → Build
+                        → Test
+                        → Code Quality Check
+                        → Package
+                        → Store Artifact
+                        → Deploy to QA
+                        → Approve
+                        → Deploy to Stage
+                        → Deploy to Production
+                        → Notify Team
+
+🏁 Summary (Easy to Remember)
+*******************************
+➤ CI = Build + Test + Integrate code frequently
+➤ CD = Deliver + Deploy application automatically
+
+############################################
+🏗️ Jenkins Architecture (Easy + Detailed)
+###########################################
+🧩 🌐 Jenkins Architecture Overview
+*************************************
+➤ Jenkins follows a Master–Agent (Controller–Node) architecture.
+➤ The Jenkins Controller manages the system, and Agents (nodes) perform the actual build and deployment tasks.
+
+🧱 🖥️ Components of Jenkins Architecture
+******************************************
+⭐ 1️⃣ Jenkins Controller (Master)
+===================================
+➤ Main brain of Jenkins
+👉 Handles all administrative tasks.
+
+➤ Responsibilities:
+➤ Managing UI and configuration
+➤ Scheduling jobs
+➤ Monitoring agents
+➤ Storing build history & job details
+➤ Handling plugin management
+➤ Triggering builds
+
+⭐ 2️⃣ Jenkins Agent (Slave / Worker Node)
+===========================================
+➤ Executes the tasks assigned by the controller.
+
+➤ Why agents are needed?
+➤ To distribute workload
+➤ To run builds on different environments
+➤ To scale Jenkins horizontally
+
+➤ Types of Agents:
+➤ SSH Agents
+➤ Docker Agents
+➤ Windows Agents
+➤ Kubernetes Agents (Pod-based)
+
+⭐ 3️⃣ Plugins
+================
+➤ Jenkins uses 2000+ plugins to integrate with:
+➤ Git, Maven, Docker
+➤ AWS, Kubernetes
+➤ SonarQube, Slack
+➤ Build tools, Test tools
+
+⭐ 4️⃣ Jenkins Jobs (Freestyle, Pipeline)
+==========================================
+➤ Jobs define what Jenkins should do.
+➤ Example tasks:
+➤ Pull code
+➤ Build artifacts
+➤ Run tests
+➤ Deploy application
+
+⭐ 5️⃣ Jenkins Pipeline
+=======================
+➤ Code-based CI/CD flow written in Jenkinsfile
+➤ Types:
+➤ Declarative Pipeline
+➤ Scripted Pipeline
+
+⭐ 6️⃣ Build Tools & Integrations
+==================================
+➤ Maven/Gradle for build
+➤ GitHub/GitLab for source control
+➤ Docker/Kubernetes for container deployment
+
+🔌 How Jenkins Works Internally
+*********************************
+⭐ 1️⃣ User Interacts with Jenkins UI
+========================================
+➤ Creates job → configures build steps → saves.
+
+⭐ 2️⃣ Build Trigger Happens
+=============================
+➤ Trigger types:
+➤ Webhook from Git
+➤ Scheduled (cron job)
+➤ Manual click
+➤ Another job
+
+⭐ 3️⃣ Jenkins Controller assigns job to agent
+===============================================
+➤ Finds an available agent
+➤ Sends job instructions
+
+⭐ 4️⃣ Agent Executes Job
+===========================
+➤ Pulls code from Git
+➤ Builds using Maven/Gradle
+➤ Runs tests
+➤ Generates artifacts
+
+⭐ 5️⃣ Artifacts are Stored
+=============================
+➤ Workspace
+➤ Nexus / Artifactory
+➤ S3 Bucket
+
+⭐ 6️⃣ Deployment
+====================
+➤ Job deploys app using SSH, Docker, Ansible, or Kubernetes.
+
+⭐ 7️⃣ Logs & Notifications
+=============================
+➤ Jenkins shows logs, build status, and sends notifications.
+
+🖼️ 📐 Jenkins Architecture Diagram (Text-Based)
+************************************************
+          ┌───────────────────────────┐
+          │     Jenkins Controller    │
+          │  - UI                     │
+          │  - Manage Jobs            │
+          │  - Schedule Builds        │
+          │  - Monitor Agents         │
+          └───────────┬───────────────┘
+                      │
+      ┌───────────────┼──────────────────┐
+      │               │                  │
+┌────────────┐ ┌────────────┐    ┌────────────┐
+│ Agent 1    │ │ Agent 2    │    │ Agent 3    │
+│ (Linux)    │ │ (Windows)  │    │ (Docker)   │
+└────────────┘ └────────────┘    └────────────┘
+      │               │                  │
+      └────── Executes Builds & Tests ───┘
+
+🧠 Summary (Easy to Remember)
+*******************************
+➤ Controller = Manager
+➤ Agent = Worker
+➤ Plugins = Power-ups
+➤ Pipeline = Code for CI/CD
+➤ Jobs = Tasks Jenkins performs
+
+#####################################
+❄️ Jenkins Server Setup in Linux VM
+#####################################
+👉 Step-1: Create Linux VM in AWS
+************************************
+➤ Launch an Ubuntu EC2 instance (Recommended: t2.medium)
+👉 Jenkins needs minimum 4 GB RAM for stable performance.
+
+➤ Open port 8080 in EC2 Security Group → Inbound rules
+👉 Jenkins runs on 8080 by default.
+
+👉 Step-2: Install Java (JDK/JRE)
+***********************************
+➤ Jenkins is built in Java, so Java must be installed first.
+
+sudo apt update
+sudo apt install fontconfig openjdk-17-jre
+java -version
+
+👉 Step-3: Install Jenkins
+***************************
+➤ Run these commands to install Jenkins from the official repository:
+
+sudo wget -O /usr/share/keyrings/jenkins-keyring.asc \
+  https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+
+echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
+  https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
+  /etc/apt/sources.list.d/jenkins.list > /dev/null
+
+sudo apt-get update
+sudo apt-get install jenkins
+
+👉 Step-4: Start Jenkins Service
+**********************************
+sudo systemctl enable jenkins
+sudo systemctl start jenkins
+
+👉 Step-5: Verify Jenkins Installation
+***************************************
+sudo systemctl status jenkins
+
+👉 Step-6: Access Jenkins in Browser
+***************************************
+Use your Linux VM Public IP:
+
+http://<public-ip>:8080/
+
+👉 Step-7: Get Jenkins Initial Admin Password
+***********************************************
+sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+
+👉 Step-8: Create Admin Account & Install Plugins
+***************************************************
+➤ Enter admin password
+➤ Create admin user
+➤ Install suggested plugins (recommended)
+
+🚀 Creating a Pipeline in Jenkins
+***********************************
+➤ Dashboard → Create Job
+➤ Enter name → Choose Pipeline → Click OK
+➤ Scroll to Pipeline Script section
+➤ Write your pipeline code
+➤ Click Apply → Save
+
+✍️ Sample Pipeline Script
+**************************
+pipeline {
+    agent any
+
+    stages {
+        stage('Hello') {
+            steps {
+                echo 'Hello World'
+            }
+        }
+    }
+}
+
+➤ Save → Click Build Now
+➤ Go to Console Output → You will see:
+
+Hello World
+
+🔁 Scheduling Pipeline Runs
+*******************************
+⭐ Build Periodically (CRON)
+===============================
+➤ Go to: Pipeline → Configure → Build Periodically
+
+Example:
+
+* * * * *
+
+➤ This means run every 1 minute
+
+⭐ Poll SCM (Git Auto-Trigger)
+===============================
+➤ Runs pipeline only when there is a change in Git repo
+
+Go to: Configure → Poll SCM
+
+Example:
+
+* * * * *
+
+➤ Checks Git repo every 1 minute and triggers if code changed.
+
+🎯 Summary
+************
+➤ Jenkins needs Java → Install Jenkins → Start service
+➤ Access via browser → Setup admin → Install plugins
+➤ Create a Pipeline → Add script → Build
+➤ Use Build Periodically for scheduling
+➤ Use Poll SCM to auto-trigger on code changes

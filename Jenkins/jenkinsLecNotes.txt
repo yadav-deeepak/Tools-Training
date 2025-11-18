@@ -1,0 +1,144 @@
+##################################
+❄️ Build and deployement process 
+##################################
+➤ Source code is taken from git hub (git clone)
+➤ Compilation unit testing and package code as .jar file mvn clean test package 
+➤ Create docker image 
+➤ Run the docker image inside the container 
+
+👉 There are different different servers in our company prod , QA , Testing Like this so we have to do all of the above for all of these servers this would take a lot of time to do all this manually so we will use jenkins to automate this deployement process.
+
+############
+❄️ Jenkins 
+############
+➤ The whole purpose of jenkins is to automate the deployment process .
+➤ Jenkins is a popular open source automation server used for continous integration(CI) and Continous Deployment (CD) in software development . It helps automate the building ,testing ,and deployment of  applications 
+➤ Automation - Jenkins automates repetitive tasks like code compilation testing and deployment 
+➤ Plugins - It has 1800+ plugins ,integrating with git ,Docker ,Kubernetes, Maven and more 
+➤ Pipeline as code - Uses jenkinsfile(Written in groovy) to define CI/CD pipelines
+
+🌟 Jenkins CI/CD flow 
+***********************
+➤ Developer push code to a repository (Github ,gitlab, bitbucket)
+➤ Jenkins pulls the latest code and triggers a build using maven 
+➤ Artifact is generated(Eg: jar, docker image).
+➤ Deployment - Jenkins deploys the application to a test/staging/production environment 
+➤ We can create jenkins pipeline in 2 ways: 
+1️⃣ Declarative pipeline 
+2️⃣ Scripted pipeline (Groovy) 
+
+✨ Jenkins Declarative pipeline 
+================================
+➤ A jenkins declarative pipeline is a structured way to define a CI/CD pipeline using groovy-based syntax. Lets break down your pipeline step by step: 
+
+🌬️ Pipeline Structure 
+-----------------------
+pipeline {  
+    agent any  // Runs the pipeline on any available agent (Jenkins node)
+
+    stages {  // Defines different stages of the pipeline
+        stage('git clone') {  // Stage 1: Clone the repository
+            steps {  
+                // Logic for cloning a Git repository
+            }
+        }
+        stage('mvn build') {  // Stage 2: Build the project using Maven
+            steps {  
+                // Logic for running Maven build
+            }
+        }
+        stage('build image') {  // Stage 3: Build a Docker image
+            steps {  
+                // Logic for building a Docker image
+            }
+        }
+    }
+}
+
+👉 We are gonna run the commands in the shell so for that we will write sh in front of every command that we write inside this  jenkinsfile .
+
+➤ Note: The sh command in a Jenkins Declarative Pipeline is used to execute shell (bash)
+
+✅ Explanation of Each Section
+................................
+1. pipeline {}
+This is the root block that defines the entire CI/CD pipeline.
+
+2. agent any
+Specifies that the pipeline can run on any available Jenkins node (agent).
+
+If you want to run it on a specific node, you can use:
+
+groovy
+
+agent { label 'my-node' }
+3. stages {}
+A stage represents a logical step in the pipeline.
+
+Each stage contains steps {} where the actual actions are performed.
+
+#####################################
+❄️ Jenkins Server setup in Linux VM 
+#####################################
+➤ Jenkins is build using java so even before installing jenkins we have to install jdk on our server . 
+
+👉 Step - 1 : Create Linux VM in AWS
+*************************************
+➤ Create Ubuntu VM using AWS EC2 (t2.medium, because jenkins require minimum 4gb RAM)
+
+Note: Enable 8080 Port Number in Security Group Inbound Rules
+
+👉 Step-2 : Install Java using below commands
+***********************************************
+sudo apt update
+sudo apt install fontconfig openjdk-17-jre
+java -version
+
+👉 Step-3 : To Install Jenkins use the below commands
+*******************************************************
+sudo wget -O /usr/share/keyrings/jenkins-keyring.asc \
+  https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
+  https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
+  /etc/apt/sources.list.d/jenkins.list > /dev/null
+sudo apt-get update
+sudo apt-get install jenkins
+
+👉 Step-4 : Start Jenkins services using below commands
+********************************************************
+sudo systemctl enable jenkins
+sudo systemctl start jenkins
+
+👉 Step-5 : Verify Jenkins setup
+**********************************
+sudo systemctl status jenkins
+
+👉 Step-6 : Open jenkins server in browser using VM public ip of linux vm
+*************************************************************************
+http://public-ip:8080/
+
+👉 Step-7 : Copy jenkins admin pwd
+************************************
+sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+
+👉 Step-8 : Create Admin Account & Install Required Plugins in Jenkins
+
+➤ Now click on create job --> give the name --> select pipeline and click ok.
+➤ After that we will reach the next page where it will ask for description if we scroll down we can see pipeline script section this is where we are gonna write our script.
+➤ Click on apply and save . Pipeline is created now if you go to this pipeline and click on configuration there we can see the pipeline script section so here we will write our script  .
+pipeline {
+    agent any
+
+    stages {
+        stage('Hello') {
+            steps {
+                echo 'Hello World'
+            }
+        }
+    }
+}
+➤ After writing script click on apply and save and then select the build now option it will start to create a build and will run our script so now go to console output you can see the output as hello world because we have written the script to print hello world 
+➤ Now if we go to configure section there we can find an option build periodically this will run our script after the time intervals you select if you select 5min then for every 5 min this script will run.
+***** // This means run every min.
+
+➤ We can also use the option of poll scm(source code management tool) present in the configure section that will run our script only when there is some change in our code.
