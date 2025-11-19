@@ -142,3 +142,56 @@ pipeline {
 ***** // This means run every min.
 
 ➤ We can also use the option of poll scm(source code management tool) present in the configure section that will run our script only when there is some change in our code.
+
+➤ Go to manage jenkins section in the settings and there click on tools then add maven as we need maven to make jar files for us so we will add maven to our jenkins 
+
+#########################################################
+❄️ How can we automate the build and deployment process 
+#########################################################
+➤ Download docker in your vm 
+curl -fsSL get.docker.com | /bin/bash
+sudo usermod -aG docker jenkins
+sudo usermod -aG docker ubuntu
+sudo systemctl restart jenkins
+sudo docker version
+
+➤ Add this script in the jenkins 
+pipeline {
+    agent any
+    
+    tools {
+        maven 'x-3.9.9'  
+    }
+
+    stages {
+        stage('git clone') {
+            steps {
+                git branch: 'main', url: 'https://github.com/pankajmutha14/docker-test.git'
+            }
+        }
+        stage('mvn') {
+            steps{
+                sh 'mvn clean test package'
+            }
+        }
+         stage('build image') {
+            steps{
+                sh 'docker build -t psait/test1 .'
+            }
+        }
+        stage('deployment'){
+            steps{
+                sh 'docker stop psait'
+                sh 'docker rm psait'
+                sh 'docker run -d -p 9090:8080 --name psait/test1'
+            }
+        }
+    }
+}
+
+➤ Now suppose we want to run our this script every min then we will go to configure --> trigger --> build periodically --> ***** (for printing every min add this )
+➤ We should run the script everytime the changes is seen in our github this is the good practice so for that we will select poll scm option in the triggers there give *****
+➤ Now every one min it will check the github is the code updated if it is updated then it will run the script again else it will not run the script.
+➤ Since our container is already running so if next time again we try to run it this will give us a problem so first we will stop the container then run again so for this we have added this commands in the deployment stage steps 
+sh 'docker stop psait'
+sh 'docker rm psait'
