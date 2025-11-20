@@ -1,0 +1,35 @@
+######################
+❄️ What is logging ?
+######################
+➤ Logging is the process of recording the application's activity, errors, and other useful information into a file(or console). These records are called as log message.
+
+###################################
+✅ Why is Logging Important?
+###################################
+
+1. Understand Application Behavior
+➤ Logs help you know what the application is doing at each step.
+
+Example: “Server started”, “User logged in”, “Order placed”, etc.
+
+2. Find Root Cause of Errors
+➤ If your app crashes or throws an error, the logs can show what exactly happened and where.
+
+Example: NullPointerException at line 52 in a log tells you exactly where the code failed.
+
+3. Debugging in Production
+➤ You can’t always open a code editor in a live app. But with logs, you can see what’s going wrong without stopping the app.
+
+4. Security & Auditing
+➤ You can track who accessed what, which can be useful for security checks or user activity monitoring.
+
+##############################
+💬 Real Life Analogy
+##############################
+➤ Imagine you run a delivery business. You keep a diary of:
+a. Orders taken
+b. Orders packed
+c. Orders delivered
+d. Complaints
+
+➤ Later, if a customer says, “I never got my package,” you check your diary (log) to find what happened. This is exactly how logs work in software.

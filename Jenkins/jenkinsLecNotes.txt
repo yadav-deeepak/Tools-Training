@@ -195,3 +195,4 @@ pipeline {
 ➤ Since our container is already running so if next time again we try to run it this will give us a problem so first we will stop the container then run again so for this we have added this commands in the deployment stage steps 
 sh 'docker stop psait'
 sh 'docker rm psait'
+
