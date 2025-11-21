@@ -33,3 +33,135 @@ c. Orders delivered
 d. Complaints
 
 ➤ Later, if a customer says, “I never got my package,” you check your diary (log) to find what happened. This is exactly how logs work in software.
+
+################################################################
+Logging Architecture one by one in a simple and practical way:
+################################################################
+
+🔧 1) Logger
+👉 What is it?
+-> Logger is the main object used to create log messages. (It is a class)
+-> It provides methods like .info(), .debug(), .error(), etc
+
+🧩 2) Layout
+👉 What is it?
+-> Layout decides how your log message looks.
+-> It defines the format/structure of each log entry.
+
+Example - 
+[DATE] [LEVEL] - [MESSAGE]
+2025-04-03 10:45:12 INFO - Server started successfully
+
+📦 3) Appender
+👉 What is it?
+-> Appender decides where the logs go.
+
+It could be the console, a file, a database, or even remote servers.
+
+✅ Common Types of Appenders:
+a. ConsoleAppender: Logs appear on the terminal/console.
+b. FileAppender: Logs are saved into a file (like app.log). Most widely used approach in projects
+c. RollingFileAppender: Automatically creates new log files when size limit is reached.
+d. SMTPAppender: Sends logs via email.
+
+☃️ Note : To analyze log files we use tools like putty ,ELK, splunk, winscp etc 
+
+########################################
+❄️ Flow of Logger how it will work:
+########################################
+
+Your Code (Logger)
+    |
+    v
+[Log Message]
+    |
+    v
+[Formatted by Layout]
+    |
+    v
+[Sent to Appender (Console/File/etc)]
+
+########################
+🌬️ Loggings Frameworks
+########################
+
+Framework	Used By Default in Spring boot?			
+Log4j	           ❌ (older)	             		 
+Log4j2		   ❌ Improved version of Log4j
+Logback		   ✅ Yes				
+Logstash	   ❌
+
+##############################################################
+✅ SLF4J (Simple Logging Facade (fuh·saad pronounce) for Java)
+##############################################################
+-> Its an interface and is been implemented in Log4J, Log4j2, Logback, 	Logstash
+→ This helps developers to **easily switch** between different logging implementations (like Log4j, Logback, etc.) without changing application code.	
+
+➤ To generate log messages in file add the following in the application.properties file 
+logging.file.name=app.log
+
+Example 1: 
+----------
+import lombok.extern.slf4j.Slf4j;  //Perform import from slf4J
+import org.springframework.stereotype.Service;
+
+@Service
+//@Slf4j  // Enables logging without needing explicit LoggerFactory
+public class OrderService {
+
+    private Logger log = LoggerFactory.getLogger(OrderService.class);
+
+    public void processOrder(int orderId) {
+        log.info("Processing order with ID: {}", orderId);
+
+        if (orderId <= 0) {
+          
+            return;
+        }
+
+        log.debug("Checking inventory for order ID: {}", orderId);
+        
+        try {
+            // Simulating some order processing logic
+            Thread.sleep(2000);
+            log.info("Order {} processed successfully!", orderId);
+        } catch (InterruptedException e) {
+           
+        }
+    }
+}	
+
+🌟 Note : If we use @Slf4j annotation then we wont need the LoggerFactory 
+
+###################################
+❄️ Log levels and their purpose 
+##################################
+➤ Each log level servers a different purpose: 
+
+──────────────────────────────────────────────────────────────────────────────
+Log Level	Purpose
+──────────────────────────────────────────────────────────────────────────────
+TRACE		Most detailed logs, used for debugging deep-level issues. Rarely
+            enabled in production.
+DEBUG		Debugging information useful for developers to track program flow.
+INFO		General application information (e.g., "Application Started 
+            Successfully"). Default in Spring Boot.
+WARN		Indications of potential issues (e.g., "Disk Space Low").
+ERROR		Severe issues that may cause the application to fail.
+──────────────────────────────────────────────────────────────────────────────
+
+#############################################
+❄️ When do we require log analyzer software 
+#############################################
+➤ We develop our project using the microservices architecture so we have multiple services present in our system and each microservice will generate its own log file so it will become really tough to analyse each file because we will have a lot of microservices present in our project so this is where we require log analyzer softwares like elk ,putty etc
+
+🌟 ELK (Elastic search Logstash kibana)
+*****************************************
+➤ So basically there are three softwares Elastic search , logstash and kibana these three softwares were integrated to analyze the log file.
+
+👉 Logstash : The job of logstash is to keep reading the logs and give it to elastic search 
+-> For doing all this logstash should know where is the elastic search running on which port(default port 9200) or which ip and it should also know about where the log files are kept.
+
+👉 Elastic Search : This will then give it to kibana which by default runs on the port 5601
+
+👉 Kibana : On this we will see all of our log files generating on its dashboard.
