@@ -421,3 +421,115 @@ Logback/Log4j2 = TV brands
 📝 One-Line Definition for Notes
 ***********************************
 SLF4J is a standard logging facade that provides a common API for logging and delegates the actual logging to underlying frameworks like Logback or Log4j2.
+
+#############################################
+📊🔥 What Are Log Levels & Their Purpose?
+############################################
+➤ Log levels define how important or severe a log message is.
+➤ They help control what gets printed and what gets ignored.
+
+🪜 📘 Log Levels (From Most Detailed → Most Severe)
+*****************************************************
+🔍 1. TRACE
+=============
+➤ Most detailed level
+➤ Used to trace the program step-by-step
+➤ Mostly used during deep debugging
+
+👉 Example:
+➤ Entering method X
+➤ Variable values at every step
+
+Usage: Rare, only for complex debugging.
+
+🧪 2. DEBUG
+==============
+➤ Used for debugging during development
+➤ Provides internal state information
+
+👉 Example:
+
+DEBUG: Query executed in 12ms
+DEBUG: Calculated discount = 20%
+
+Usage: Development & QA.
+
+ℹ️ 3. INFO
+=============
+➤ Used to log normal application events
+➤ Indicates that the application is working as expected
+
+👉 Example:
+
+INFO: User registered successfully
+INFO: Payment service started
+
+Usage: Mostly used in production.
+
+⚠️ 4. WARN
+============
+➤ Something unexpected happened, but the system can still continue
+➤ Not an error, but needs attention
+
+👉 Example:
+
+WARN: Disk usage above 80%
+WARN: Retry attempt 1 for API call
+Usage: Potential problems.
+
+❌ 5. ERROR
+=============
+➤ Something failed, but application is still running
+➤ Needs immediate attention
+
+👉 Example:
+
+ERROR: Unable to connect to database
+ERROR: NullPointerException in PaymentService
+
+Usage: Major issues that need fixing.
+
+💀 6. FATAL (rare in Java frameworks)
+=======================================
+➤ Severe error causing system shutdown or crash
+
+👉 Example:
+
+FATAL: Configuration file missing. Application will terminate.
+
+Usage: Critical failures.
+
+🎯 Purpose of Log Levels
+***************************
+➤ 1. Control Verbosity
+========================
+👉 Prevent flooding logs with unnecessary details.
+
+➤ 2. Better Debugging
+========================
+👉 Different levels help identify where the issue is happening.
+
+➤ 3. Efficient Performance
+============================
+👉 Lower levels (DEBUG/TRACE) are disabled in production to boost performance.
+
+➤ 4. Clear Problem Severity
+=============================
+👉 Easier to respond: INFO → OK, WARN → Look into it, ERROR → Fix ASAP
+
+➤ 5. Filtering & Searching
+============================
+👉 Monitoring tools (ELK/Splunk) can filter logs by level.
+
+🎯 Summary Table for Notes
+****************************
+##################################################
+| Level | Meaning             | Use Case         |
+| ----- | ------------------- | ---------------- |
+| TRACE | Most detailed       | Deep debugging   |
+| DEBUG | Developer debugging | Internal state   |
+| INFO  | Normal operations   | Success messages |
+| WARN  | Potential issue     | Needs attention  |
+| ERROR | Something failed    | Fix immediately  |
+| FATAL | Crash-level failure | System shutdown  |
+##################################################

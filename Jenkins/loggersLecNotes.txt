@@ -165,3 +165,4 @@ ERROR		Severe issues that may cause the application to fail.
 👉 Elastic Search : This will then give it to kibana which by default runs on the port 5601
 
 👉 Kibana : On this we will see all of our log files generating on its dashboard.
+
