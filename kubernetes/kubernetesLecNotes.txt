@@ -110,3 +110,116 @@ A shopping website experiences high traffic during a sale.
 4. Pod: The smallest deployable unit in Kubernetes, housing one or more containers.
 
 5. Container: Runs inside a Pod and contains the application code.
+
+#####################################
+🚀 What is a POD in Kubernetes?
+#####################################
+
+✅ Key Concepts Explained:
+-----------------------------
+1. If you deploy an app, it will ultimately run inside one or more Pods. It is a building block to run app that we deploy in K8S
+
+2. "Applications will be deployed as PODS in k8s."
+Your app (e.g., a Spring Boot API) will be containerized using Docker. This container will then be wrapped inside a Pod and deployed on the cluster.
+
+3. "To create PODS we will use Docker images."
+A Pod runs one or more containers (usually one), and each container uses a Docker image. You can build a Docker image of your app and then deploy it inside a Pod.
+
+4. "To create PODS we will use Manifest YML file."
+A YAML manifest file defines the configuration for the Pod (or other resources like Deployments).
+
+It includes:
+
+a. The name of the Pod
+
+b. The image to use
+
+c. Ports to expose
+
+c. Environment variables, etc.
+
+
+5. "Create multiple PODS."
+The same image (e.g., myapp:latest) can be used to create many Pods. This is how you scale your application—running multiple copies (Pods) to handle more traffic.
+
+6. "If we run application with multiple pods then Load Balancing can be performed resulting in 99.9% uptime of the application."
+High Availability: If one Pod crashes, others are still running, so your app stays available.Load Balancing: Kubernetes distributes traffic across Pods using a Service (like a load balancer).
+
+7. "PODS count will be increased and decreased based on the demand (scalability)."
+Kubernetes supports auto-scaling. You can scale Pods manually or automatically using a Horizontal Pod Autoscaler (HPA). Based on CPU/memory usage or custom metrics, Kubernetes will increase/decrease the number of Pods.
+
+
+###############################
+🚀 Kubernetes Services
+###############################
+
+-> A Kubernetes Service is used to expose a group of Pods so that they can be accessed reliably. Since Pods can be created and destroyed at any time (with changing IPs), a Service gives them a stable network identity.
+
+---------------------------
+🧭 Why Do We Use Services?
+---------------------------
+
+-> Pods are short-lived and can crash or restart.
+
+-> Each time a Pod is created, it gets a new IP address.
+
+-> Directly accessing Pods via IP is not reliable.
+
+-> A Service gives a static IP to a group of Pods.
+
+---------------------------------
+🌐 Types of Kubernetes Services
+---------------------------------
+
+Kubernetes offers different types of services depending on how and where you want to expose your Pods:
+
+🔹 1. ClusterIP (Default)
+🔸 2. NodePort
+🔹 3. LoadBalancer
+
+-------------------------------------------------------
+🔐 ClusterIP Service (Internal Access Only)
+-------------------------------------------------------
+
+📌 Key Points:
+-> Pods are short-lived objects; if one crashes, Kubernetes replaces it with a new Pod.
+-> Every new Pod gets a different IP address.
+
+Note: 🛑 Never rely on Pod IPs to access an application.
+
+-> A ClusterIP Service groups multiple Pods  and assigns them a single static IP.
+
+-> This static IP allows other components inside the cluster to access the group of Pods reliably, even when individual Pods change.
+
+---------------------
+🚫 Access Scope:
+---------------------
+
+-> Only accessible within the Kubernetes cluster.
+
+-> Not reachable from the outside world (internet or external clients).
+
+----------------
+💡 Use Case:
+----------------
+-> Internal services such as databases, backend APIs, authentication services, etc.
+
+Example: You don’t want to expose a database Pod to the internet, so you use a ClusterIP service to allow access only from other internal Pods.
+
+----------------------------------------------------
+🌐 What is a NodePort Service in Kubernetes?
+----------------------------------------------------
+-> A NodePort service is a type of Kubernetes Service that exposes your Pods outside the cluster using a port on each worker node (called a "NodePort").
+
+🧭 Why Use NodePort?
+------------------------------------
+By default, Pods and ClusterIP services are only accessible within the cluster.
+
+NodePort makes them accessible externally by opening a static port (from 30000 to 32767) on each worker node.
+
+It allows you to access your application using:
+
+http://<NodeIP>:<NodePort>
+
+
+Note: Here all traffic is routed to one worker node. Means load balancing cannot happen here.
