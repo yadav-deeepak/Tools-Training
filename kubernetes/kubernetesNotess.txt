@@ -60,3 +60,119 @@
 🎯 In One Line
 *****************
 ➤ Kubernetes = A powerful platform to run, manage, scale, heal, update, and operate containers automatically at any scale.
+
+###########################################################
+🏗️☸️ Kubernetes Architecture (Master–Worker Architecture)
+###########################################################
+➤ Kubernetes follows a Master–Worker (Control Plane – Node) architecture, where the Control Plane manages the cluster, and Worker Nodes run your applications inside Pods.
+➤ Let’s break it down clearly for your notes 👇
+
+🧠 1. Control Plane Components (Master Node)
+***********************************************
+➤ The brain of Kubernetes — responsible for managing the entire cluster.
+
+📍 🧭 API Server (kube-apiserver)
+====================================
+➤ Acts as the front door of the Kubernetes cluster.
+➤ All commands (kubectl / other components) go through the API Server.
+➤ It validates requests and updates the cluster state.
+
+👉 Think of it as the “Reception Desk” of Kubernetes.
+
+🧱 📚 etcd (Key-Value Store)
+===============================
+➤ A distributed, consistent key-value database.
+➤ Stores entire cluster state:
+➤ Pods
+➤ Nodes
+➤ Configs
+➤ Secrets
+➤ If etcd fails, Kubernetes breaks.
+
+👉 It’s the “memory” of the cluster.
+
+🧠 📡 Controller Manager (kube-controller-manager)
+===================================================
+➤ Ensures the actual state matches the desired state.
+➤ Runs multiple controllers:
+➤ Node Controller
+➤ Deployment Controller
+➤ ReplicaSet Controller
+➤ Job Controller
+
+👉 It’s the “automation brain” that keeps everything correct.
+
+🗺️ ⚖️ Scheduler (kube-scheduler)
+===================================
+➤ Decides on which node a Pod should run.
+➤ Scheduler checks:
+➤ Available CPU
+➤ Available RAM
+➤ Node health
+➤ Taints/Tolerations
+
+👉 It’s the “Placement Officer” of the cluster.
+
+🖥️ 2. Worker Node Components
+******************************
+Nodes where your applications actually run inside Pods.
+
+📦 🚀 Kubelet
+================
+➤ Agent running on every node.
+➤ Ensures containers inside Pods are running correctly.
+➤ Communicates with API Server.
+
+👉 It’s the “Employee” who follows the Control Plane’s instructions.
+
+📦 🌐 Kube-Proxy
+====================
+➤ Handles networking for Pods.
+➤ Manages:
+➤ Service discovery
+➤ Load balancing
+➤ Ensures traffic reaches the correct Pod.
+
+👉 It’s the “Network Manager” of each node.
+
+🐳 Container Runtime
+
+➤ Kubernetes uses container engines such as:
+➤ Docker
+➤ containerd
+➤ CRI-O
+
+➤ Responsible for running actual containers.
+
+👉 It’s the “Machine” that runs your containers.
+
+🧩 3. Kubernetes Objects (Run on Worker Nodes)
+************************************************
+🧱 Pods
+==========
+➤ Smallest deployable unit in Kubernetes.
+➤ Contains 1 or more containers.
+
+🌐 Services
+============
+➤ Provide stable networking to Pods.
+
+🏗️ Deployments
+=================
+➤ Control how Pods are created, updated, or scaled.
+
+🔄 Flow Of Kubernetes Architecture (Simplified)
+*************************************************
+1️⃣ You give a command:
+kubectl apply -f deployment.yaml
+
+2️⃣ API Server receives the request.
+3️⃣ Scheduler decides on which worker node to place Pods.
+4️⃣ Kubelet runs the Pods on the chosen node.
+5️⃣ Kube-Proxy manages network traffic.
+6️⃣ Controller Manager ensures desired state stays maintained.
+7️⃣ etcd stores all changes permanently.
+
+🎯 In One Line
+******************
+➤ Kubernetes Architecture = Control Plane (brains) + Worker Nodes (execution) working together to run and manage containerized applications automatically.
