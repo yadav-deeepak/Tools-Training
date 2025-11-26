@@ -514,3 +514,141 @@ kubectl apply -f service-01.yml
 ❄️ To delete all resources use
 ################################
 -> kubectl delete all --all
+
+#######################################
+❄️ What are name spaces in k8s?
+#######################################
+-> They help logically group and isolate resources. Just like how we create folders to isolate our work in computers.
+------------------
+Example:
+-----------------
+database-ns = all database-related stuff
+backend-ns = for backend applications
+
+➤ Note: If we donot specifiy name space they k8S will automatically provide default name - space
+
+##############
+❄️ Commands
+##############
+➤ list all name spaces
+----------------------
+-> kubectl get ns
+
+➤ list all pods in given name space
+-----------------------------------
+-> kubectl get pod -n <name-space>
+######################################
+❄️ How to create name space in k8s
+######################################
+1. Using kubectl command-
+kubectl create namespace backend-ns
+
+2.using manifest yml file 
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+ name: backend-ns
+... 
+
+# execute manifest yml
+kubeclt apply -f <yml-file-name>
+
+# get all resources belongs to backend-ns namespace
+kubectl get all -n backend-ns
+
+#get all pods in kube-system
+kubectly get pods -n kube-system
+
+#get all worker nodes
+kubectl get nodes
+
+#delete name space - All resource related to that will be deleted
+kubectl delete ns backend-ns
+
+#Open tunnel
+minikube service <service-name>
+
+######################################################
+❄️ Namespace with POD with Service creation yml file
+######################################################
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+ name: backend-ns
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: testpod
+  namespace: backend-ns
+  labels:
+    app: dempapp
+spec:
+  containers:
+    - name: test
+      image: psait/pankajsiracademy:latest
+      ports:
+        - containerPort: 9090
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: testpod-service
+  namespace: backend-ns
+spec:
+  type: NodePort
+  selector:
+    app: dempapp           # This must match the Pod's label
+  ports:
+    - port: 80             # Exposed port for external access
+      targetPort: 9090     # Port on which the app is running inside the container
+      nodePort: 30080      # External port exposed on each node
+...
+
+
+##################
+❄️ k8S Resources
+##################
+➤ When you create a Pod directly using kind: Pod, Kubernetes does not manage its lifecycle — if it crashes or is deleted, it's gone forever unless recreated manually.
+➤ K8S resources manages POD lifecycle
+➤  To let Kubernetes manage, restart, and scale Pods, we use higher-level controllers like the ones you listed.
+
+🔁 1) ReplicationController (RC)
+🔁 2) ReplicaSet (RS)
+🚀 3) Deployment
+🛰 4) DaemonSet
+💾 5) StatefulSet
+
+📦 What is ReplicationController (RC)?
+***************************************
+➤ A Kubernetes resource used to manage the lifecycle of Pods.
+➤ Ensures a specified number of Pods are always running.
+➤ Provides self-healing — if a Pod crashes or is deleted, RC will recreate it.
+
+manifest yml file
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+ name: webapp
+spec:
+ replicas: 3
+ selector:
+  app: dempapp
+ template:
+  metadata:
+   name: testpod
+   labels: 
+    app: dempapp
+  spec:
+   containers:
+    - name: webappcontainer
+      image: psait/pankajsiracademy:latest
+      ports:
+      - containerPort: 9090
+...
+
+kubectl apply -f rc.yml
