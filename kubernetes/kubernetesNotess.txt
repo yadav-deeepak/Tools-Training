@@ -467,3 +467,247 @@ spec:
 🎯 In One Line
 *****************
 ➤ Service = stable IP + DNS + load balancing + internal/external connectivity for Pods.
+
+#######################################################
+📄☸️ Kubernetes Manifest YAML — Complete Explanation
+#######################################################
+➤ A Kubernetes Manifest YAML is the configuration file used to tell Kubernetes what you want to create or manage in the cluster.
+➤ Here is the perfect note-friendly explanation for you 👇
+
+🧾 What is a Kubernetes Manifest YAML?
+****************************************
+➤ A Manifest YAML is a file written in YAML format that describes the desired state of Kubernetes resources like:
+➤ Pod
+➤ Deployment
+➤ Service
+➤ ConfigMap
+➤ Secret
+➤ Ingress
+➤ Namespace
+➤ PersistentVolume
+➤ And many more…
+
+➤ YAML file tells Kubernetes what to create, configure, or update.
+
+👉 You don’t manually create Pods/Services — you write YAML, and Kubernetes does the rest.
+
+⭐ Why Do We Use Manifest Files?
+**********************************
+➤ 1. Declarative approach
+==========================
+👉 You describe WHAT you want, not HOW to do it.
+
+➤ 2. Repeatability
+====================
+👉 Same YAML can be used to deploy the app anywhere:
+➤ Dev
+➤ Staging
+➤ Production
+
+➤ 3. Version control
+=======================
+👉 YAML files can be stored in Git for CI/CD pipelines.
+
+➤ 4. Easier to maintain
+==========================
+👉 Teams can review YAML instead of commands.
+
+🧱 Basic Structure of a Kubernetes YAML Manifest
+**************************************************
+➤ A manifest usually has 4 main sections:
+
+1️⃣ apiVersion
+===============
+➤ Defines which version of Kubernetes API to use.
+Examples:
+
+apiVersion: v1
+apiVersion: apps/v1
+
+2️⃣ kind
+=========
+➤ Defines the type of Kubernetes object:
+
+Pod
+Deployment
+Service
+ConfigMap
+
+3️⃣ metadata
+=============
+➤ Contains information like:
+➤ name
+➤ labels
+➤ namespace
+
+Example:
+
+metadata:
+  name: myapp
+
+4️⃣ spec (Specification)
+=========================
+➤ MOST IMPORTANT part.
+➤ Defines the desired state of the object.
+Examples:
+➤ Number of replicas
+➤ Container image
+➤ Ports
+➤ Volumes
+➤ Selector
+
+📝 Example Kubernetes Deployment Manifest YAML
+************************************************
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: myapp
+  template:
+    metadata:
+      labels:
+        app: myapp
+    spec:
+      containers:
+      - name: nginx-container
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+
+📝 Example Kubernetes Service Manifest YAML
+**********************************************
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
+spec:
+  type: ClusterIP
+  selector:
+    app: myapp
+  ports:
+  - port: 80
+    targetPort: 80
+
+🎯 In One Line
+****************
+➤ A Kubernetes Manifest YAML is a declarative configuration file that tells Kubernetes what resources to create and how they should behave.
+
+##########################################################
+☸️ Kubernetes Service Manifest YAML – Clean Explanation
+##########################################################
+📄 K8s Service Manifest YAML (NodePort Example)
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: testpod-service
+spec:
+  type: NodePort
+  selector:
+    app: demoapp             
+  ports:
+    - port: 80               
+      targetPort: 9090       
+      nodePort: 30080        
+
+📘 Explanation (Field-by-Field)
+*********************************
+➤ name: testpod-service
+===========================
+👉 Name of the service object.
+
+➤ type: NodePort
+===================
+👉 Exposes the application outside the cluster using <NodeIP>:<NodePort>.
+
+➤ selector → app: demoapp
+===========================
+👉 Connects the service to Pods having this label.
+👉 This MUST match the Pod’s metadata.labels.
+
+➤ port: 80
+=============
+👉 Internal service port (inside cluster).
+👉 Common for HTTP traffic.
+
+➤ targetPort: 9090
+=====================
+👉 Port your container actually listens on inside the Pod.
+
+➤ nodePort: 30080
+===================
+👉 External port open on every Kubernetes node.
+👉 Access application using:
+
+http://<NodeIP>:30080/
+
+💻 Useful kubectl Commands
+****************************
+➤ Check Services
+kubectl get svc
+
+➤ Create Service from YAML
+kubectl apply -f testpod-service.yml
+
+➤ Verify Service
+kubectl get svc
+
+➤ Open Service in Browser (Minikube Only)
+minikube service testpod-service
+
+🌐 Test from Browser or Terminal
+*********************************
+➤ Get Minikube IP
+minikube ip
+
+➤ Test From Host Machine (Same Network)
+curl http://<Minikube-IP>:30080/
+
+Example:
+curl http://192.168.49.2:30080/
+
+🧠 curl Command Explanation
+******************************
+#########################################################################################
+| Part                                           | Meaning                              |
+| ---------------------------------------------- | ------------------------------------ |
+| **curl**                                       | CLI tool to make HTTP requests       |
+| **[http://192.168.49.2](http://192.168.49.2)** | Minikube VM IP (cluster entry point) |
+| **:30080**                                     | NodePort exposed by the service      |
+| **/**                                          | Hits root ("/") endpoint of your app |
+#########################################################################################
+
+🗑️ Delete Pod / Service
+=========================
+➤ Delete Pod
+kubectl delete pod testpod
+
+➤ Delete Service
+kubectl delete svc testpod-service
+
+➤ Recreate Resources
+kubectl apply -f pod-01.yml
+kubectl apply -f service-01.yml
+
+🧹 Clean Up Minikube
+======================
+➤ Stop Minikube
+minikube stop
+
+➤ Delete Minikube Cluster
+minikube delete
+
+➤ Check Status
+minikube status
+
+📊 View All Resources
+========================
+kubectl get all
+
+🗑️ Delete All Resources in Namespace
+======================================
+kubectl delete all --all

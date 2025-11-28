@@ -176,45 +176,54 @@ c) GCP GKE (Google Kubernetes Engine)
 ❄️ MiniKube Setup
 #######################
 ➤ Step-1 : Setup Linux VM
+----------------------------
 Login into AWS Cloud account
 Create Linux VM with Ubuntu AMI - t2.medium
 Select Storage as 50 GB or more with 2 vCPU required minimum(Default is 8 GB only for Linux)
 Create Linux VM and connect to it using SSH Client
 
 ➤ Step-2 : Install Docker In Ubuntu VM
+-----------------------------------------
 sudo apt update
 curl -fsSL get.docker.com | /bin/bash
 sudo usermod -aG docker ubuntu 
 exit
 
 ➤ Step-3 : Updating system packages before installing Minikube dependencies
-
+------------------------------------------------------------------------------
 sudo apt update
 sudo apt install -y curl wget apt-transport-https
 
 ➤ Step-4 : Installing Minikube
-
+--------------------------------
 curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
 sudo install minikube-linux-amd64 /usr/local/bin/minikube
 minikube version
 
-➤ Step-5 : Install Kubectl (Kubernetes Client)
+// curl will send an http request and will get response.
 
+➤ Step-5 : Install Kubectl (Kubernetes Client)
+------------------------------------------------
+-> We need to install this because instructions to the control plane is given by kubectl.
 curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
 chmod +x kubectl
 sudo mv kubectl /usr/local/bin/
 kubectl version -o yaml
 
 ➤ Step-6 : Start MiniKube Server
+-----------------------------------
 minikube start — driver=docker
 
 ➤ Step-7 : Check MiniKube status
+-----------------------------------
 minikube status
 
 ➤ Step-8 : Access K8S Cluster
+--------------------------------
 kubectl cluster-info
 
 ➤ Step-9 : Access K8S Nodes
+-----------------------------
 kubectl get nodes
 
 #####################################
@@ -779,3 +788,42 @@ spec:
     - port: 80
       targetPort: 9090
       nodePort: 30095
+
+#############################
+❄️ Deployment in kubernetes 
+#############################
++-----------------------+---------------------------+---------------------------+
+| Feature               | ReplicaSet                | Deployment                |
++-----------------------+---------------------------+---------------------------+
+| Manages Pods          | ✅ Yes                    | ✅ Yes (via ReplicaSet)   |
++-----------------------+---------------------------+---------------------------+
+| Rolling Updates       | ❌ No                     | ✅ Yes                    |
++-----------------------+---------------------------+---------------------------+
+| Rollbacks             | ❌ No                     | ✅ Yes                    |
++-----------------------+---------------------------+---------------------------+
+| YAML Kind             | ReplicaSet                | Deployment                |
++-----------------------+---------------------------+---------------------------+
+| Use in Real World     | Rare                      | Very Common               |
++-----------------------+---------------------------+---------------------------+
+
+➤ A deployment in kubernetes is one of the most recommended and used resource for managing POD lifecycle. It ensures reliable application deployment with features like zero downtime ,auto-scaling ,rolling updates and rollback capabilities .
+
+📅 Key advantages of using deployments 
+***************************************
+👉 Zero Downtime: Deployments ensure high availability by using strategies like rolling updates . Even when pods are being updated, the service remains available to users .
+
+👉 Auto Scaling: With Kubernetes Horizontal Pod Autoscaler, you can automatically scale your Pods based on CPU or memory usage (or other custom metrics).
+
+👉 Rolling Update & Rollback: Kubernetes allows rolling updates, which means it will gradually update Pods one by one, ensuring the application remains available throughout the process. If something goes wrong during the update, you can rollback to a previous stable version.
+
+✨ When to choose which strategy ?
+====================================
+👉 Use Rolling Update : 
+------------------------
+➤ For most production workloads where high availability and zero downtime are required 
+➤ When you are gradually releasing new versions of your application and want to avoid service disruptions 
+
+👉 Use Recreate : 
+--------------------
+➤ For non critical applications or during maintainence windows where it's okay to have temporary outage.
+➤ When you need to clear everything and redeploy fresh pods(Eg: clearing persistent state or major upgrades).
