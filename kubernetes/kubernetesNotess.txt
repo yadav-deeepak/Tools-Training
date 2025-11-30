@@ -711,3 +711,101 @@ kubectl get all
 🗑️ Delete All Resources in Namespace
 ======================================
 kubectl delete all --all
+
+##########################################
+🧩 🗂️ What Are Namespaces in Kubernetes?
+##########################################
+➤ A Namespace is a logical partition inside a Kubernetes cluster used to organize and isolate resources.
+➤ Think of a namespace as a folder inside your cluster where you keep specific resources (Pods, Services, Deployments, etc.).
+
+🎯 Why Do We Use Namespaces?
+******************************
+➤ Isolation of resources
+==========================
+👉 Resources inside one namespace cannot access resources in another namespace unless allowed.
+
+➤ Avoid name conflicts
+=========================
+👉 You can have two Deployments named app but in different namespaces.
+
+➤ Access control (RBAC)
+=========================
+👉 You can give team A access to namespace team-a but restrict access to prod.
+
+➤ Resource quotas
+===================
+👉 You can limit CPU, memory, number of pods per namespace.
+
+➤ Organize environments
+=========================
+👉 Example namespaces:
+dev
+test
+stage
+prod
+
+🧱 How Namespaces Work Internally
+***********************************
+➤ When you create a resource without specifying a namespace → It goes to default namespace.
+
+➤ Some resources are not namespaced (cluster-wide), such as:
+👉 Nodes
+👉 PersistentVolumes
+👉 StorageClasses
+
+📌 Default Namespaces in Kubernetes
+*************************************
+Kubernetes comes with 4 namespaces by default:
+
+➤ default
+============
+👉 Where your workloads go if you don't specify a namespace.
+
+➤ kube-system
+================
+👉 Contains internal components (scheduler, controller manager, DNS, etc.).
+
+➤ kube-public
+================
+👉 Publicly readable objects (rarely used).
+
+➤ kube-node-lease
+===================
+👉 Stores node heartbeat objects for monitoring node availability.
+
+🛠️ Common Namespace Commands
+*****************************
+➤ List namespaces
+-------------------
+kubectl get ns
+
+➤ Create a namespace
+----------------------
+kubectl create namespace dev
+
+➤ Delete a namespace
+----------------------
+kubectl delete namespace dev
+
+➤ See resources inside a namespace
+------------------------------------
+kubectl get pods -n dev
+
+➤ Apply manifest to a namespace
+---------------------------------
+kubectl apply -f app.yaml -n dev
+
+➤ Set a default namespace for kubectl
+---------------------------------------
+kubectl config set-context --current --namespace=dev
+
+🧠 Real-Life Analogy
+**********************
+👉 Imagine your cluster is a big office building, and namespaces are different departments like HR, Sales, Engineering.
+Each department has:
+➤ Its own space
+➤ Its own employees/resources
+➤ Access rules
+➤ Its own budget (resource quota)
+
+They all exist inside the same building but do not interfere with each other.

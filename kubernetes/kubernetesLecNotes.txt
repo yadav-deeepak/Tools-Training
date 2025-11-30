@@ -992,6 +992,104 @@ spec:
 #########################
 ➤ Amazon Elastic Kubernetes Service is a managed service that makes it easy for you to run kubernetes on AWS without needing to install and operate your own kubernetes clusters.
 
+📅 EKS setup 
+**************
+👉 Step 1: Create EKS management host in AWS 
+----------------------------------------------
+➤ Launch new ubuntu VM using AWS EC2(t2.micro)
+➤ Connect to machine and install kubectl using below commands 
+
+curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.19.6/2021-01-05/bin/linux/amd64/kubectl
+chmod +x ./kubectl
+sudo mv ./kubectl /usr/local/bin
+kubectl version --short --client
+
+➤ Install AWS CLI latest version using below commands 
+
+sudo apt install unzip
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
+aws --version
+
+➤ Install eksctl using below commands 
+
+curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+sudo mv /tmp/eksctl /usr/local/bin
+eksctl version
+
+👉 Step 2: Create IAM role and attach to EKS management host 
+--------------------------------------------------------------
+➤ Create new role using IAM service (Select usecase-EC2)
+➤ Add below permission for the role 
+  => Administrator-acces 
+➤ Enter role name(eksrole)
+➤ Attach created role to EKS management host (Select EC2 => click on security => Modify IAM role => attach IAM role we have created)
+
+👉 Step 3: Create EKS cluster using ekctl 
+--------------------------------------------
+Syntax: 
+eksctl create cluster --name cluster-name
+--region region-name
+--node-type instance-type
+--nodes-min 2
+--nodes-max 2 \ --zones ,
+
+-> Mumbai 
+===========
+eksctl create cluster --name psait-cluster4 --region ap-south-1 --node-type t3.micro  --zones ap-south-1a,ap-south-1b
+
+-> If we dont specify the number of worker nodes then by default it will create 2 worker nodes.
+
+➤ After the cluster is created we can check nodes using the below command 
+kubectl get nodes
+
 📅 How to create more worker nodes in EKS ?
 *********************************************
 ➤ There are two ways to create more worker nodes: 
+
+✅ Option 1: CLI method (Add --nodes flag)
+============================================
+➤ You can specify the number of nodes when creating the cluster using the --nodes flag: 
+
+eksctl create cluster \
+  --name psait-cluster4 \
+  --region ap-south-1 \
+  --node-type t2.medium \
+  --zones ap-south-1a,ap-south-1b \
+  --nodes 4 \
+  --nodes-min 2 \
+  --nodes-max 6
+
+🌟 What this means : 
+----------------------
+--nodes 4 -> Start with 4 worker nodes 
+
+--nodes-min 2 -> Minimum nodes for autoscaling 
+
+--nodes-max 6 -> Max nodes for autoscaling
+
+➤ Nodes will be spread across the AZs you mention (Load balancer). 
+
+✅ Option 2: YAML config file (More Flexible)
+===============================================
+➤ Create a cluster.yml like this: 
+
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: psait-cluster4
+  region: ap-south-1
+
+availabilityZones: ["ap-south-1a", "ap-south-1b"]
+
+nodeGroups:
+  - name: ng-1
+    instanceType: t2.medium
+    desiredCapacity: 4
+    minSize: 2
+    maxSize: 6
+    volumeSize: 20
+  
+👉 Note: We can use terraform for the same to create EKS setup.
