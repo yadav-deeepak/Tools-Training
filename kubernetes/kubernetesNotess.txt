@@ -809,3 +809,157 @@ Each department has:
 ➤ Its own budget (resource quota)
 
 They all exist inside the same building but do not interfere with each other.
+
+########################################
+📦 Kubernetes Resources (K8s Resources)
+########################################
+➤ Kubernetes resources are the building blocks you create and manage inside a cluster.
+➤ Anything you deploy, run, or configure in Kubernetes is treated as a resource.
+
+🧩 Types of Kubernetes Resources
+**********************************
+1️⃣ 🧱 Core Resources (Fundamental Resources)
+===============================================
+These are the most commonly used resources.
+
+➤ Pod
+--------
+👉 Smallest deployable unit in Kubernetes
+👉 Runs one or more containers
+
+➤ ReplicaSet
+--------------
+👉 Ensures a fixed number of Pods are always running
+👉 Automatically replaces crashed Pods
+
+➤ Deployment
+---------------
+👉 Most used resource for app deployment
+👉 Provides:
+➤ Rolling updates
+➤ Rollbacks
+➤ Version control
+➤ Auto-scaling compatibility
+
+➤ Service
+-----------
+👉 Provides network access to Pods
+👉 Types: ClusterIP, NodePort, LoadBalancer
+
+➤ Namespace
+--------------
+👉 Logical grouping of resources
+👉 Used for multi-team isolation, RBAC, different environments (dev/prod)
+
+2️⃣ ☁️ Networking Resources
+============================
+➤ Ingress
+-----------
+👉 Exposes HTTP/HTTPS apps using a URL or domain
+👉 Works like a reverse proxy + load balancer
+
+➤ Endpoints / EndpointSlice
+------------------------------
+👉 Store Pod IPs behind a Service
+👉 Used for routing requests
+
+3️⃣ 🗂️ Storage Resources
+===========================
+➤ PersistentVolume (PV)
+--------------------------
+👉 Actual storage in cluster
+👉 Can come from AWS EBS, NFS, GCP, Minikube, etc.
+
+➤ PersistentVolumeClaim (PVC)
+--------------------------------
+👉 Request for PV storage
+👉 Your application requests storage via PVC
+
+➤ ConfigMap
+--------------
+👉 Stores non-sensitive configuration (URLs, ENV variables)
+
+➤ Secret
+-----------
+👉 Stores sensitive data (passwords, tokens, API keys)
+👉 Base64 encoded
+
+4️⃣ ⚙️ Workload Resources
+==========================
+➤ StatefulSet
+--------------
+👉 Deploys apps that need stable identity + persistent storage
+👉 Used for databases: MySQL, MongoDB, Cassandra
+
+➤ DaemonSet
+-------------
+👉 Runs one Pod per node
+👉 Used for log collectors, monitoring agents, kube-proxy
+
+➤ Job
+--------
+👉 Runs once, completes task, stops
+👉 Example: data backup job
+
+➤ CronJob
+-----------
+👉 Runs jobs on a schedule
+👉 Like Linux CRON (e.g., run every night)
+
+5️⃣ 🛡️ Security & Access Resources
+==================================
+➤ ServiceAccount
+-------------------
+👉 Used by Pods to access API server
+👉 Provides identity for workloads
+
+➤ Role & RoleBinding
+----------------------
+👉 Namespace-level permissions
+
+➤ ClusterRole & ClusterRoleBinding
+-----------------------------------
+👉 Cluster-level permissions
+👉 Admin-level access
+
+6️⃣ 📊 Auto-Scaling Resources
+==============================
+➤ Horizontal Pod Autoscaler (HPA)
+-------------------------------------
+👉 Auto-increases or decreases Pod replicas based on CPU/Mem
+
+➤ Vertical Pod Autoscaler (VPA)
+---------------------------------
+👉 Auto-adjusts container CPU/memory requests/limits
+
+➤ Cluster Autoscaler
+----------------------
+👉 Adds/removes worker nodes automatically
+
+7️⃣ 🔧 System Resources
+==========================
+➤ Node
+--------
+👉 Worker machine (VM, physical, or cloud instance)
+
+➤ Resource Quota
+-------------------
+👉 Limits how much CPU, memory, storage a namespace can use
+
+➤ LimitRange
+---------------
+👉 Defines min/max resources for each Pod/container
+
+🎯 Summary Table
+*****************
+################################################################
+| Category   | Resources                                       |
+| ---------- | ----------------------------------------------- |
+| Core       | Pod, ReplicaSet, Deployment, Service, Namespace |
+| Networking | Ingress, EndpointSlice                          |
+| Storage    | PV, PVC, ConfigMap, Secret                      |
+| Workload   | StatefulSet, DaemonSet, Job, CronJob            |
+| Security   | ServiceAccount, Role, RBAC                      |
+| Scaling    | HPA, VPA, Cluster Autoscaler                    |
+| System     | Node, ResourceQuota, LimitRange                 |
+################################################################
