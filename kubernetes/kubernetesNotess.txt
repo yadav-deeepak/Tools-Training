@@ -1043,3 +1043,239 @@ label selector: app=myapp
 ➤ Obsolete → replaced by ReplicaSet
 ➤ Deployment manages ReplicaSets
 ➤ RC has limited label selectors
+
+###################################
+🤖 ReplicaSet (RS) in Kubernetes
+###################################
+🧩 What is a ReplicaSet?
+***************************
+➤ A ReplicaSet (RS) is a Kubernetes resource that ensures a specific number of identical Pods are running at all times.
+➤ It provides self-healing and horizontal scaling for Pods.
+
+🌟 Key Features of ReplicaSet
+******************************
+➤ 1. Self-Healing
+===================
+👉 If a Pod crashes or is manually deleted, RS creates a new Pod automatically.
+
+➤ 2. Scaling
+==============
+👉 Easy to scale Pods:
+
+kubectl scale rs webapp --replicas=5
+
+➤ 3. Label Selector Based Management
+======================================
+👉 RS only manages Pods matching its selector.
+👉 Other Pods are ignored even if running in the cluster.
+
+➤ 4. Set-Based Selectors
+=========================
+👉 Supports:
+In
+NotIn
+Exists
+
+(This is one major improvement over ReplicationController.)
+
+🔥 Important Concept
+***********************
+"ReplicaSet maintains Pod count, not Pod version."
+For rolling updates → Deployment is used.
+
+🧪 Understanding With Example
+*******************************
+🟦 Pod 1 — Label: app: myapp
+------------------------------
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-pod
+  labels:
+    app: myapp
+spec:
+  containers:
+    - name: myappcontainer
+      image: nginx
+      ports:
+        - containerPort: 80
+
+🟪 Pod 2 — Label: app: dempapp
+--------------------------------
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dempapp-pod
+  labels:
+    app: dempapp
+spec:
+  containers:
+    - name: dempappcontainer
+      image: nginx
+      ports:
+        - containerPort: 80
+
+🟥 ReplicaSet Managing BOTH Pods
+
+(Because the selector uses matchExpressions)
+
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: rs-webapp
+spec:
+  replicas: 2
+  selector:
+    matchExpressions:
+      - key: app
+        operator: In
+        values:
+          - dempapp
+          - myapp
+  template:
+    metadata:
+      labels:
+        app: dempapp
+    spec:
+      containers:
+        - name: webappcontainer
+          image: nginx
+          ports:
+            - containerPort: 80
+
+📌 Pods created by the ReplicaSet will always get the label:
+
+app: dempapp
+
+📌 But existing Pods with labels myapp or dempapp will also be counted by the RS due to the selector.
+
+🧪 Practical ReplicaSet + Service YAML
+---------------------------------------
+replica-set.yml
+
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: webapp
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: dempapp         # Must match pod template labels
+  template:
+    metadata:
+      labels:
+        app: dempapp
+    spec:
+      containers:
+        - name: webappcontainer
+          image: psait/pankajsiracademy:latest
+          ports:
+            - containerPort: 9090
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webappservice
+spec:
+  type: NodePort
+  selector:
+    app: dempapp           # Must match pod labels
+  ports:
+    - port: 80
+      targetPort: 9090
+      nodePort: 30095
+
+🧪 Commands for Testing
+*************************
+➤ Create resources
+kubectl apply -f replica-set.yml
+
+➤ Check ReplicaSet
+kubectl get rs
+
+➤ Check Pods created by RS
+kubectl get pods
+
+➤ Expose service (Minikube)
+minikube service webappservice
+
+🎯 Summary (Best for Notes)
+*****************************
+➤ ReplicaSet ensures desired Pod count
+➤ Supports set-based selectors
+➤ Provides self-healing & scaling
+➤ Does NOT support rolling updates
+➤ Used internally by Deployment
+➤ Companies use Deployment → not ReplicaSet directly
+
+#####################################################
+🔄 ReplicationController vs ReplicaSet (Kubernetes)
+#####################################################
+🧩 🤖 What is ReplicationController (RC)?
+********************************************
+➤ Old/legacy Kubernetes workload
+➤ Ensures a fixed number of Pods are running
+➤ Uses only equality-based selectors
+➤ No rolling updates
+➤ Practically not used anymore
+
+🔁 🤖 What is ReplicaSet (RS)?
+*********************************
+➤ Modern and advanced version of RC
+➤ Ensures a fixed number of Pods
+➤ Supports set-based selectors
+➤ Forms the core of Deployments (used internally)
+➤ Not used directly, but still active
+
+🆚 Key Differences: ReplicaSet vs ReplicationController
+*********************************************************
+###################################################################################################################
+| Feature              | ReplicationController (RC)          | ReplicaSet (RS)                                    |
+| -------------------- | ----------------------------------- | -------------------------------------------------- |
+| **Selector Support** | Only *equality-based* (`app=myapp`) | *Set-based* (`In`, `NotIn`, `Exists`)              |
+| **Rolling Updates**  | ❌ Not Supported                    | ❌ Not directly → Done via Deployment             |
+| **Used By**          | Deprecated → Not used               | Used internally by Deployment                      |
+| **Modern Usage**     | Almost 0%                           | Indirectly used (Deployment creates ReplicaSets)   |
+| **Functionality**    | Maintains number of Pods            | More powerful Pod selection + auto-scaling support |
+| **YAML**             | apiVersion: v1                      | apiVersion: apps/v1                                |
+| **Replacement**      | Replaced by ReplicaSet              | Used but not directly deployed in real world       |
+###################################################################################################################
+
+🎯 Most Important Practical Difference
+****************************************
+➤ ReplicationController selector
+===================================
+👉 Only equality match:
+
+selector:
+  app: myapp
+
+➤ ReplicaSet selector
+========================
+👉 Allows set-based selection:
+
+matchExpressions:
+  - key: app
+    operator: In
+    values:
+      - app1
+      - app2
+
+This allows RS to manage multiple labeled pods, something RC cannot do.
+
+⚙️ Why ReplicaSet Replaced ReplicationController
+*************************************************
+➤ 1. More powerful label selectors
+➤ 2. Better integration with Deployment
+➤ 3. More flexible pod grouping
+➤ 4. RC became redundant and outdated
+
+🧠 Best Summary (Add to Notes)
+********************************
+➤ RC = Old, simple, only equality selectors, obsolete
+➤ RS = Improved RC + supports set-based selectors
+➤ Deployment = Manages RS and provides rolling updates
+➤ Real world → You only create Deployments, not RC or RS
