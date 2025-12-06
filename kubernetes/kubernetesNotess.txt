@@ -1352,3 +1352,110 @@ spec:
 🟦 In One Line
 ******************
 ➤ A Deployment is the recommended way to run, update, scale, and manage your application Pods in Kubernetes.
+
+############################################
+🟦 Amazon EKS (Elastic Kubernetes Service)
+############################################
+➤ Amazon EKS is a managed Kubernetes service provided by AWS.
+
+👉 In simple words:
+EKS = Kubernetes on AWS, but AWS manages the master/control plane for you.
+
+➤ You don’t have to install or maintain Kubernetes manually.
+➤ AWS takes care of the hard part.
+
+🎯 Why Amazon EKS?
+*********************
+✔ 1. Fully Managed Control Plane
+==================================
+AWS manages:
+➤ API Server
+➤ Scheduler
+➤ Controller Manager
+➤ etcd
+
+➤ You do NOT need to set up Kubernetes master nodes.
+
+✔ 2. Highly Available & Secure
+==================================
+➤ Control plane runs across multiple AWS AZs
+➤ Automatic patching & updates
+➤ Integrates with IAM for authentication.
+
+✔ 3. Works with AWS ecosystem
+==============================
+➤ VPC networking
+➤ ALB/NLB load balancers
+➤ CloudWatch logs
+➤ ECR for storing container images
+➤ Auto Scaling groups for worker nodes
+
+✔ 4. Scale Easily
+===================
+➤ Add/remove worker nodes automatically using:
+➤ Managed Node Groups
+➤ EC2 Auto Scaling
+➤ Fargate (serverless)
+
+🧠 Easy Analogy
+*****************
+➤ Think of EKS like having AWS as your Kubernetes admin.
+
+Without EKS → You build Kubernetes from scratch
+With EKS → AWS sets up Kubernetes for you and you only deploy apps
+
+🧩 How EKS Works
+*******************
+✔ Control Plane
+=================
+➤ AWS creates and manages the Kubernetes master nodes for you.
+➤ You don’t see them and don’t pay per node, only pay for cluster hours.
+
+✔ Worker Nodes
+================
+You create nodes:
+➤ EC2 instances
+➤ OR AWS Fargate (serverless pods)
+➤ Pods run inside these worker nodes, just like normal Kubernetes.
+
+✔ kubectl works the same
+=========================
+You can use:
+
+kubectl get pods
+kubectl apply -f deployment.yml
+
+➤ Nothing changes — EKS still uses standard Kubernetes.
+
+🏗️ EKS Architecture (Easy View)
+********************************
+                   AWS Managed (You don't manage)
+               +--------------------------------+
+               |      EKS CONTROL PLANE         |
+               |  API Server | Scheduler | etcd |
+               +--------------------------------+
+                           |
+        -------------------------------------------------
+        |                     |                       |
+   +-----------+        +-----------+           +-----------+
+   | Worker    |        | Worker    |           | Worker    |
+   | Node EC2  |        | Node EC2  |           | Fargate   |
+   +-----------+        +-----------+           +-----------+
+   | Kubelet   |        | Kubelet   |           | Kubelet   |
+   | Pods      |        | Pods      |           | Pods      |
+   +-----------+        +-----------+           +-----------+
+
+📌 Where is EKS used?
+***********************
+EKS is ideal for:
+➤ Microservices architecture
+➤ Large-scale distributed systems
+➤ CI/CD pipelines
+➤ Autoscaling applications
+➤ Multi-cloud Kubernetes (EKS + GKE + AKS) setups
+
+📍 Short Interview Answer
+**************************
+Amazon EKS is AWS’s managed Kubernetes service that handles the Kubernetes control plane for you.
+It provides a secure, scalable, and highly available Kubernetes environment without needing to install or maintain master nodes.
+You only manage worker nodes and your applications.
